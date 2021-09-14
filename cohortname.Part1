@@ -1,0 +1,11 @@
+Cohort name: ...
+Cohort description: ...
+Cohort members: Matthew Standeven, ...
+
+Source repository: Github
+Main form of communication: Discord
+
+Project description:
+The objective of this project is to simulate circular objects with random trajectories and masses. 
+The ALU will calculate the interactions between the objects. 
+The simulated objects will be displayed using Java.
