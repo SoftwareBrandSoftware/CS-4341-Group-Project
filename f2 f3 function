@@ -1,0 +1,3 @@
+f2 = W'XYZ + WX'YZ + WXY'Z + WXYZ' + WXYZ
+
+f3 = W'XYZ + WX'Y'Z +  WX'YZ + WXY'Z + WXYZ' + WXYZ
