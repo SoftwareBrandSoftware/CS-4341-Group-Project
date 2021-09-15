@@ -1,0 +1,5 @@
+f8 = {3, 7, 11, 15}
+f8 = w'x'yz + w'xyz + wx'yz + wxyz
+
+f9 = {1, 2, 4, 7, 8, 11, 13, 14}
+f9 = w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wx'y'z' + wx'yz + wxy'z + wxyz'
