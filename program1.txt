@@ -1,28 +1,49 @@
 //----------------------------------------------------------------------
 module Breadboard	(w,x,y,z,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9);  //Module Header
-input w,x,y,z;                 						         //Specify inputs
-output r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;                       //Specify outputs
-reg r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;                         //Output is a memory area.
+input w,x,y,z;                 				         //Specify inputs
+output r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;                           //Specify outputs
+reg r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;                             //Output is a memory area.
 
 always @ ( w,x,y,z,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9) begin       //Create a set of code that works line by line 
-															  // if the variables are used
+							     // if the variables are used
 
 //f0 = w'x'yz + w'xyz' + w'xyz + wx'y'z + wx'yz + wxy'z' + wxy'z + wxyz' + wxyz	//Comment for the formula
-//r0= (x)|((!y)&z);                     //Bitwise operation of the formula
+r0= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);   //Bitwise operation of the formula
 
 //f1 = w'x'yz + w'xy'z + w'xyz + wx'yz + wxy'z' + wxy'z + wxyz' + wxyz
+r1= ((!w)&(!x)&y&z)|((!w)&x&(!y)&z)|((!w)&x&y&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f2 = W'XYZ + WX'YZ + WXY'Z + WXYZ' + WXYZ
+//todo
+r2= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f3 = W'XYZ + WX'Y'Z +  WX'YZ + WXY'Z + WXYZ' + WXYZ
+//todo
+r3= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f4 = w'x'yz + w'xyz + wx'yz + wxyz
+//todo
+r4= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f5 = w'x'y'z' + w'x'y'z + w'x'yz' + w'x'yz + w'xy'z' + wx'y'z' + wxy'z'
+//todo
+r5= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f6 = w'y'x'z + w'x'yz' +w'x'yz+ w'xy'z + wx'y'z'+wxy'z
+//todo
+r6= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f7 = w'x'yz + w'xy'z +w'xyz' + wx'y'z + wx'yz' + wxy'z'
+//todo
+r7= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+
+//f8 = w'x'yz + w'xyz + wx'yz + wxyz
+//todo
+r8= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+
+//f9 = w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wx'y'z' + wx'yz + wxy'z + wxyz'
+//todo
+r9= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 end                                   // Finish the Always block
 
@@ -34,10 +55,10 @@ module testbench();
 
   //Registers act like local variables
   reg [4:0] i; //A loop control for 16 rows of a truth table.
-  reg  a;//Value of 2^3
-  reg  b;//Value of 2^2
-  reg  c;//Value of 2^1
-  reg  d;//Value of 2^0
+  reg  w;//Value of 2^3
+  reg  x;//Value of 2^2
+  reg  y;//Value of 2^1
+  reg  z;//Value of 2^0
   
   //A wire can hold the return of a function
   wire  f0,f1,f2,f3,f4,f5,f6,f7,f8,f9;
@@ -46,7 +67,7 @@ module testbench();
   //They are instantiated like an object of a class, 
   //with a constructor with parameters.  They are not invoked,
   //but operate like a thread.
-  Breadboard zap(a,b,c,d,f0,f1,f2,f3,f4,f5,f6,f7,f8,f9);
+  Breadboard zap(w,x,y,z,f0,f1,f2,f3,f4,f5,f6,f7,f8,f9);
   //FunctionOne zap2(b,c,d,a,f2);
      
 	 
@@ -55,21 +76,21 @@ module testbench();
   initial begin
    	
   //$display acts like a classic C printf command.
-  $display ("|##|A|B|C|D|F1|");
+  $display ("|##|W|X|Y|Z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9");
   $display ("|==+=+=+=+=+==|");
   
     //A for loop, with register i being the loop control variable.
 	for (i = 0; i < 16; i = i + 1) 
 	begin//Open the code blook of the for loop
-		a=(i/8)%2;//High bit
-		b=(i/4)%2;
-		c=(i/2)%2;
-		d=(i/1)%2;//Low bit	
+		w=(i/8)%2;//High bit
+		x=(i/4)%2;
+		y=(i/2)%2;
+		z=(i/1)%2;//Low bit	
 		 
 		//Oh, Dr. Becker, do you remember what belongs here? 
 		#60;
 		 	
-		$display ("|%2d|%1d|%1d|%1d|%1d| %1d|",i,a,b,c,d,f1);
+		$display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d",i,w,x,y,z,f0,f1,f2,f3,f4,f5,f6,f7,f8,f9);
 		if(i%4==3) //Every fourth row of the table, put in a marker for easier reading.
 		 $display ("|--+-+-+-+-+--|");//Only one line, does not need a code block
 
