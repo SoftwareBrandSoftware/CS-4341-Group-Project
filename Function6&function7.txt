@@ -1,0 +1,2 @@
+f6 = w'x'y'z + w'x'yz' + w'x'yz + w'xy'z + wx'y'z' + wxy'z 
+f7 = w'x'yz + w'xy'z + w'xyz' wx'y'z + wx'yz' + wxy'z'
