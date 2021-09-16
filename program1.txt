@@ -23,11 +23,11 @@ r3= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w
 
 //f4 = w'x'yz + w'xyz + wx'yz + wxyz
 //todo
-r4= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r4= ((!w)&(!x)&y&z)|((!w)&x&y&z)|(w&(!x)&y&z)|(w&x&y&z);
 
 //f5 = w'x'y'z' + w'x'y'z + w'x'yz' + w'x'yz + w'xy'z' + wx'y'z' + wxy'z'
 //todo
-r5= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r5= ((!w)&(!x)&(!y)&(!z))|((!w)&(!x)&(!y)&z)|((!w)&(!x)&y&(!z))|((!w)&(!x)&y&z)|((!w)&x&(!y)&(!z))|(w&(!x)&(!y)&(!z))|(w&x&(!y)&(!z));
 
 //f6 = w'y'x'z + w'x'yz' +w'x'yz+ w'xy'z + wx'y'z'+wxy'z
 //todo
