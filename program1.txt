@@ -37,12 +37,10 @@ r6= ((!w)&(!x)&(!y)&z)|((!w)&(!x)&y&(!z))|((!w)&(!x)&y&z)|((!w)&(x)&(!y)&z)|(w&(
 r7= ((!w)&(!x)&y&z)|((!w)&x&(!y)&z)|((!w)&x&y&(!z))|(w&(!x)&(!y)&z)|(w&(!x)&y&(!z))|(w&x&(!y)&(!z));
 
 //f8 = w'x'yz + w'xyz + wx'yz + wxyz
-//todo
-r8= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r8= ((!w)&(!x)&y&z)|((!w)&x&y&z)|(w&(!x)&y&z)|(w&x&y&z);
 
 //f9 = w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wx'y'z' + wx'yz + wxy'z + wxyz'
-//todo
-r9= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r9= ((!w)&(!x)&(!y)&z)|((!w)&(!x)&y&(!z))|((!w)&x&(!y)&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&(!z))|(w&(!x)&y&z)|(w&x&(!y)&z)|(w&x&y&(!z));
 
 end                                   // Finish the Always block
 
