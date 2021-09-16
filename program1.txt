@@ -16,7 +16,7 @@ r1= ((!w)&(!x)&y&z)|((!w)&x&(!y)&z)|((!w)&x&y&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w
 r2= ((!w)&x&y&z)|(w&(!x)&y&z)|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f3 = W'XYZ +         WX'Y'Z +       WX'YZ +     WXY'Z +     WXYZ' +      WXYZ 
-r3= ((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z):
+r3= ((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
 
 //f4 = w'x'yz + w'xyz + wx'yz + wxyz
 //todo
