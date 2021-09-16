@@ -1,4 +1,3 @@
-//----------------------------------------------------------------------
 module Breadboard	(w,x,y,z,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9);  //Module Header
 input w,x,y,z;                 				         //Specify inputs
 output r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;                           //Specify outputs
@@ -31,11 +30,11 @@ r5= ((!w)&(!x)&(!y)&(!z))|((!w)&(!x)&(!y)&z)|((!w)&(!x)&y&(!z))|((!w)&(!x)&y&z)|
 
 //f6 = w'y'x'z + w'x'yz' +w'x'yz+ w'xy'z + wx'y'z'+wxy'z
 //todo
-r6= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r6= ((!w)&(!x)&(!y)&z)|((!w)&(!x)&y&(!z))|((!w)&(!x)&y&z)|((!w)&(x)&(!y)&z)|(w&(!x)&(!y)&(!z))|(w&x&(!y)&z);
 
-//f7 = w'x'yz + w'xy'z +w'xyz' + wx'y'z + wx'yz' + wxy'z'
+//f7 = w'x'yz + w'xy'z + w'xyz' wx'y'z + wx'yz' + wxy'z'
 //todo
-r7= ((!w)&(!x)&y&z)|((!w)&x&y&(!z))|((!w)&x&y&z)|(w&(!x)&(!y)&z)|(w&(!x)&y&z)|(w&x&(!y)&(!z))|(w&x&(!y)&z)|(w&x&y&(!z))|(w&x&y&z);
+r7= ((!w)&(!x)&y&z)|((!w)&x&(!y)&z)|((!w)&x&y&(!z))|(w&(!x)&(!y)&z)|(w&(!x)&y&(!z))|(w&x&(!y)&(!z));
 
 //f8 = w'x'yz + w'xyz + wx'yz + wxyz
 //todo
