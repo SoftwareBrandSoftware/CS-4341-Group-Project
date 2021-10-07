@@ -1,0 +1,129 @@
+
+
+module AddSub(inputA,inputB,mode,sum,carry,overflow);
+    input [15:0] inputA;
+    input [15:0] inputB;
+    
+    input mode;
+    
+    output [31:0] sum;
+    output carry;
+    output overflow;
+    
+    wire b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,ba,bb,bc,bd,be,bf; //XOR Interfaces
+    wire c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,ca,cb,cc,cd,ce,cf,c00; //Carry Interfaces
+	
+    assign b0 = inputB[0]  ^ mode;
+    assign b1 = inputB[1]  ^ mode;
+    assign b2 = inputB[2]  ^ mode;
+    assign b3 = inputB[3]  ^ mode;
+    assign b4 = inputB[4]  ^ mode;
+    assign b5 = inputB[5]  ^ mode;
+    assign b6 = inputB[6]  ^ mode;
+    assign b7 = inputB[7]  ^ mode;
+    assign b8 = inputB[8]  ^ mode;
+    assign b9 = inputB[9]  ^ mode;
+    assign ba = inputB[10] ^ mode;
+    assign bb = inputB[11] ^ mode;
+    assign bc = inputB[12] ^ mode;
+    assign bd = inputB[13] ^ mode;
+    assign be = inputB[14] ^ mode;
+    assign bf = inputB[15] ^ mode;
+
+    FullAdder FA0(inputA[0], b0,mode,c1,sum[0]);
+    FullAdder FA1(inputA[1], b1,  c1,c2,sum[1]);
+    FullAdder FA2(inputA[2], b2,  c2,c3,sum[2]);
+    FullAdder FA3(inputA[3], b3,  c3,c4,sum[3]);
+    FullAdder FA4(inputA[4], b4,  c4,c5,sum[4]);
+    FullAdder FA5(inputA[5], b5,  c5,c6,sum[5]);
+    FullAdder FA6(inputA[6], b6,  c6,c7,sum[6]);
+    FullAdder FA7(inputA[7], b7,  c7,c8,sum[7]);
+    FullAdder FA8(inputA[8], b8,  c8,c9,sum[8]);
+    FullAdder FA9(inputA[9], b9,  c9,ca,sum[9]);
+    FullAdder FAa(inputA[10],ba,  ca,cb,sum[a]);
+    FullAdder FAb(inputA[11],bb,  cb,cc,sum[b]);
+    FullAdder FAc(inputA[12],bc,  cc,cd,sum[c]);
+    FullAdder FAd(inputA[13],bd,  cd,ce,sum[d]);
+    FullAdder FAe(inputA[14],be,  ce,cf,sum[e]);
+    FullAdder FAf(inputA[15],bf,  cf,c00,sum[f]);
+	
+    assign carry=c00;
+    assign overflow=c00^cf;
+ 
+endmodule
+
+
+
+
+
+
+module Mux16x32b(channels, select, b);
+	input [15:0][31:0] channels;
+	input      [15:0] select;
+	output      [31:0] b;
+
+
+	assign b = 	   ({16{select[15]}} & channels[15]) | 
+               		   ({16{select[14]}} & channels[14]) |
+			   ({16{select[13]}} & channels[13]) |
+			   ({16{select[12]}} & channels[12]) |
+			   ({16{select[11]}} & channels[11]) |
+			   ({16{select[10]}} & channels[10]) |
+			   ({16{select[ 9]}} & channels[ 9]) |
+			   ({16{select[ 8]}} & channels[ 8]) |
+			   ({16{select[ 7]}} & channels[ 7]) |
+			   ({16{select[ 6]}} & channels[ 6]) |
+			   ({16{select[ 5]}} & channels[ 5]) |
+			   ({16{select[ 4]}} & channels[ 4]) |
+			   ({16{select[ 3]}} & channels[ 3]) |
+			   ({16{select[ 2]}} & channels[ 2]) | 
+               		   ({16{select[ 1]}} & channels[ 1]) |
+               		   ({16{select[ 0]}} & channels[ 0]) ;
+
+endmodule
+
+
+
+
+module Dec4x16(binary,onehot);
+	input [3:0] binary;
+	output [15:0]onehot;
+	
+	assign onehot[ 0]=~binary[3]&~binary[2]&~binary[1]&~binary[0];
+	assign onehot[ 1]=~binary[3]&~binary[2]&~binary[1]& binary[0];
+	assign onehot[ 2]=~binary[3]&~binary[2]& binary[1]&~binary[0];
+	assign onehot[ 3]=~binary[3]&~binary[2]& binary[1]& binary[0];
+	assign onehot[ 4]=~binary[3]& binary[2]&~binary[1]&~binary[0];
+	assign onehot[ 5]=~binary[3]& binary[2]&~binary[1]& binary[0];
+	assign onehot[ 6]=~binary[3]& binary[2]& binary[1]&~binary[0];
+	assign onehot[ 7]=~binary[3]& binary[2]& binary[1]& binary[0];
+	assign onehot[ 8]= binary[3]&~binary[2]&~binary[1]&~binary[0];
+	assign onehot[ 9]= binary[3]&~binary[2]&~binary[1]& binary[0];
+	assign onehot[10]= binary[3]&~binary[2]& binary[1]&~binary[0];
+	assign onehot[11]= binary[3]&~binary[2]& binary[1]& binary[0];
+	assign onehot[12]= binary[3]& binary[2]&~binary[1]&~binary[0];
+	assign onehot[13]= binary[3]& binary[2]&~binary[1]& binary[0];
+	assign onehot[14]= binary[3]& binary[2]& binary[1]&~binary[0];
+	assign onehot[15]= binary[3]& binary[2]& binary[1]& binary[0];
+	
+endmodule;
+
+
+module divider(inpA,inpB,out,err);
+	input [15:0] inpA;
+	input [15:0] inpB;
+
+	output [31:0] out;
+	output err;
+
+	assign out = inpA/inpB;
+	assign err = //todo;
+
+endmodule;	
+
+
+
+
+
+
+
