@@ -1,4 +1,34 @@
 
+//=============================================
+// Full Adder
+//=============================================
+module FullAdder(A,B,C,carry,sum);
+	input A;
+	input B;
+	input C;
+	output carry;
+	output sum;
+	reg carry;
+	reg sum;
+//---------------------------------------------	
+	wire c0;
+	wire s0;
+	wire c1;
+	wire s1;
+//---------------------------------------------
+	HalfAdder ha1(A ,B,c0,s0);
+	HalfAdder ha2(s0,C,c1,s1);
+//---------------------------------------------
+	always @(*) 
+	  begin
+	    sum=s1;//
+		sum= A^B^C;
+	    carry=c1|c0;//
+		carry= ((A^B)&C)|(A&B);  
+	  end
+//---------------------------------------------
+	
+endmodule
 
 module AddSub(inputA,inputB,mode,sum,carry,overflow);
     input [15:0] inputA;
@@ -6,7 +36,7 @@ module AddSub(inputA,inputB,mode,sum,carry,overflow);
     
     input mode;
     
-    output [31:0] sum;
+    output [15:0] sum;
     output carry;
     output overflow;
     
@@ -123,7 +153,13 @@ endmodule;
 
 
 
+modiule multiplier(inpA,inpB,out);
+	input [15:0] inpA;
+	input [15:0] inpB;
 
-
-
+	output [31:0] out;
+	
+	
+endmodule;
+	
 
