@@ -179,5 +179,28 @@ modiule multiplier(inpA,inpB,out);
 	
 	
 endmodule;
-	
+
+module Modulus(inpA,inpB,out,err);
+	input [15:0] inpA;
+	input [15:0] inpB;
+
+	output [31:0] out;
+	output err;
+
+if(inpB != 0)
+{
+	assign out = inpA%inpB;
+}
+else if
+{
+assign err = (err[0]);   
+}
+else
+{
+assign err =(err[1])
+}
+
+out = out; //redundancy 
+
+endmodule;	
 
