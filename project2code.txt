@@ -171,7 +171,7 @@ endmodule;
 
 
 
-modiule multiplier(inpA,inpB,out);
+module multiplier(inpA,inpB,out);
 	input [15:0] inpA;
 	input [15:0] inpB;
 
