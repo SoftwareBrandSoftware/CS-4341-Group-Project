@@ -187,20 +187,9 @@ module Modulus(inpA,inpB,out,err);
 	output [31:0] out;
 	output err;
 
-if(inpB != 0)
-{
 	assign out = inpA%inpB;
-}
-else if
-{
-assign err = (err[0]);   
-}
-else
-{
-assign err =(err[1])
-}
+    assign err = 1;
 
-out = out; //redundancy 
 
 endmodule;	
 
