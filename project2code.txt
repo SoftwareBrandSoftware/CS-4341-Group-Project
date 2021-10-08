@@ -204,3 +204,59 @@ out = out; //redundancy
 
 endmodule;	
 
+module BreadBoard(inputA,inputB,command,result,error);
+	input [15:0]inputA;
+	input [15:0]inputB;
+	input [3:0] command;
+	output [15:0]result;
+	output carry;
+	output error;
+
+	wire [15:0]inputA;
+	wire [15:0]inputB;
+	wire [3:0] command;
+	reg mode;
+	
+	AddSub nept(inputA,inputB,mode,result,carry,error);
+	
+	always @(*)  
+	begin
+	mode=command[2];
+	end
+endmodule
+
+
+
+module TestBench();
+ 
+  reg [15:0] inputA;
+  reg [15:0] inputB;
+  reg [3:0] command;
+  wire [15:0] result;
+  wire error;
+  BreadBoard BB8(inputA,inputB,command,result,error);
+  
+
+  
+  initial begin
+    assign inputA  = 16'b0111111111111111;
+	assign inputB  = 16'b0000000000000001;
+	assign command = 4'b0001;
+	
+	#10;
+	$display("%2d:%b,%2d:%b,ADD:%b,%b,E:%b",inputA,inputA,inputB,inputB,command,result,error);
+	$display();
+ 
+  
+   	assign command=4'b0101;
+	#10;		
+
+	$display("%2d:%b,%2d:%b,SUB:%b,%b,E:%b",inputA,inputA,inputB,inputB,command,result,error);
+
+	#60; 
+	$finish;
+  end  
+ 
+
+ 
+endmodule  
