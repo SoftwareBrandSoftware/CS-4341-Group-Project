@@ -191,19 +191,54 @@ module BreadBoard(inputA,inputB,command,result,error);
 	input [15:0]inputB;
 	input [3:0] command;
 	output [31:0]result;
-	output carry;
-	output error;
+	output [1:0] error;
+	
 
-	wire [15:0]inputA;
-	wire [15:0]inputB;
+	//Multiplexer
+	wire [15:0][31:0] channels ;
+	wire [15:0] onehotMux;
+
+
+	// Adder-Subtractor
+	wire [15:0]addSubInputA;
+	wire [15:0]addSubInputB;
 	wire [3:0] command;
+	wire [31:0] sum;
 	reg mode;
 	
-	AddSub nept(inputA,inputB,mode,result,carry,error);
+	// Multiplier
+	wire [31:0] mult;
+	
+	// Divisor
+	wire [31:0] div;
+	
+	// Modulus
+	wire [31:0] mod;
+	
+	Dec4x16 DecAlpha(command,onehotMux);
+	AddSub nept(inputA,inputB,mode,sum,carry,error[0]);
+	Mux16x32b satu(channels,onehotMux,result);
+	
+	assign channels[ 0]=sum;//Addition
+	assign channels[ 1]=sum;//Subtraction
+	assign channels[ 2]=mult;
+	assign channels[ 3]=div;
+	assign channels[ 4]=mod;
+	assign channels[ 5]=0;//GROUND=0
+	assign channels[ 6]=0;//GROUND=0
+	assign channels[ 7]=0;//GROUND=0
+	assign channels[ 8]=0;//GROUND=0
+	assign channels[ 9]=0;//GROUND=0
+	assign channels[10]=0;//GROUND=0
+	assign channels[11]=0;//GROUND=0
+	assign channels[12]=0;//GROUND=0
+	assign channels[13]=0;//GROUND=0
+	assign channels[14]=0;//GROUND=0
+	assign channels[15]=0;//GROUND=0
 	
 	always @(*)  
 	begin
-	mode=command[2];
+	mode=command[0];
 	end
 endmodule
 
@@ -214,7 +249,7 @@ module TestBench();
   reg [15:0] inputB;
   reg [3:0] command;
   wire [31:0] result;
-  wire error;
+  wire [1:0] error;
   BreadBoard BB8(inputA,inputB,command,result,error);
   
 
@@ -222,14 +257,12 @@ module TestBench();
   initial begin
     assign inputA  = 16'b0111111111111111;
 	assign inputB  = 16'b0000000000000001;
-	assign command = 4'b0001;
+	assign command = 4'b0000;
 	
 	#10;
 	$display("%2d:%b,%2d:%b,ADD:%b,%b,E:%b",inputA,inputA,inputB,inputB,command,result,error);
-	$display();
- 
   
-   	assign command=4'b0101;
+   	assign command=4'b0001;
 	#10;		
 
 	$display("%2d:%b,%2d:%b,SUB:%b,%b,E:%b",inputA,inputA,inputB,inputB,command,result,error);
