@@ -200,9 +200,6 @@ module BreadBoard(inputA,inputB,command,result,error);
 
 
 	// Adder-Subtractor
-	wire [15:0]addSubInputA;
-	wire [15:0]addSubInputB;
-	wire [3:0] command;
 	wire [31:0] sum;
 	reg mode;
 	
