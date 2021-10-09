@@ -180,6 +180,9 @@ module Modulus(inpA,inpB,out,err);
 	output [31:0] out;
 	output err;
 
+        assign out = $unsigned(inpA) % 10;
+	assign out = $unsigned(inpB) % 10;
+
 	assign out = inpA%inpB;
     assign err = 1;
 
