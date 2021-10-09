@@ -54,7 +54,7 @@ module AddSub(inputA,inputB,mode,sum,carry,overflow);
     
     input mode;
     
-    output [15:0] sum;
+    output [31:0] sum;
     output carry;
     output overflow;
     
@@ -94,6 +94,7 @@ module AddSub(inputA,inputB,mode,sum,carry,overflow);
     FullAdder FAd(inputA[13],bd,  cd,ce,sum[13]);
     FullAdder FAe(inputA[14],be,  ce,cf,sum[14]);
     FullAdder FAf(inputA[15],bf,  cf,c00,sum[15]);
+    assign sum[31:16] = 16'b0000000000000000;
 	
     assign carry=c00;
     assign overflow=c00^cf;
@@ -171,14 +172,6 @@ endmodule;
 
 
 
-module multiplier(inpA,inpB,out);
-	input [15:0] inpA;
-	input [15:0] inpB;
-
-	output [31:0] out;
-	
-	
-endmodule;
 
 module Modulus(inpA,inpB,out,err);
 	input [15:0] inpA;
@@ -197,7 +190,7 @@ module BreadBoard(inputA,inputB,command,result,error);
 	input [15:0]inputA;
 	input [15:0]inputB;
 	input [3:0] command;
-	output [15:0]result;
+	output [31:0]result;
 	output carry;
 	output error;
 
@@ -215,13 +208,12 @@ module BreadBoard(inputA,inputB,command,result,error);
 endmodule
 
 
-
 module TestBench();
  
   reg [15:0] inputA;
   reg [15:0] inputB;
   reg [3:0] command;
-  wire [15:0] result;
+  wire [31:0] result;
   wire error;
   BreadBoard BB8(inputA,inputB,command,result,error);
   
@@ -245,7 +237,5 @@ module TestBench();
 	#60; 
 	$finish;
   end  
- 
-
- 
-endmodule  
+  
+endmodule
