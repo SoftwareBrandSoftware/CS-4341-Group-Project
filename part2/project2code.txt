@@ -48,6 +48,8 @@ module FullAdder(A,B,C,carry,sum);
 	
 endmodule
 
+
+
 module AddSub(inputA,inputB,mode,sum,carry,overflow);
     input [15:0] inputA;
     input [15:0] inputB;
@@ -103,9 +105,6 @@ endmodule
 
 
 
-
-
-
 module Mux16x32b(channels, select, b);
 	input [15:0][31:0] channels;
 	input      [15:0] select;
@@ -129,7 +128,6 @@ module Mux16x32b(channels, select, b);
                	({16{select[ 0]}} & channels[ 0]) ;
 
 endmodule
-
 
 
 
@@ -157,6 +155,123 @@ module Dec4x16(binary,onehot);
 endmodule;
 
 
+
+// Needed for multiplier
+module AddSub16B(inputA,inputB,mode,sum,carry,overflow);
+	input [15:0] inputA;
+    input [15:0] inputB;
+    
+    input mode;
+    
+    output [15:0] sum;
+    output carry;
+    output overflow;
+    
+    wire b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,ba,bb,bc,bd,be,bf; //XOR Interfaces
+    wire c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,ca,cb,cc,cd,ce,cf,c00; //Carry Interfaces
+	
+    assign b0 = inputB[0]  ^ mode;
+    assign b1 = inputB[1]  ^ mode;
+    assign b2 = inputB[2]  ^ mode;
+    assign b3 = inputB[3]  ^ mode;
+    assign b4 = inputB[4]  ^ mode;
+    assign b5 = inputB[5]  ^ mode;
+    assign b6 = inputB[6]  ^ mode;
+    assign b7 = inputB[7]  ^ mode;
+    assign b8 = inputB[8]  ^ mode;
+    assign b9 = inputB[9]  ^ mode;
+    assign ba = inputB[10] ^ mode;
+    assign bb = inputB[11] ^ mode;
+    assign bc = inputB[12] ^ mode;
+    assign bd = inputB[13] ^ mode;
+    assign be = inputB[14] ^ mode;
+    assign bf = inputB[15] ^ mode;
+
+    FullAdder FA0(inputA[0], b0,mode,c1,sum[0]);
+    FullAdder FA1(inputA[1], b1,  c1,c2,sum[1]);
+    FullAdder FA2(inputA[2], b2,  c2,c3,sum[2]);
+    FullAdder FA3(inputA[3], b3,  c3,c4,sum[3]);
+    FullAdder FA4(inputA[4], b4,  c4,c5,sum[4]);
+    FullAdder FA5(inputA[5], b5,  c5,c6,sum[5]);
+    FullAdder FA6(inputA[6], b6,  c6,c7,sum[6]);
+    FullAdder FA7(inputA[7], b7,  c7,c8,sum[7]);
+    FullAdder FA8(inputA[8], b8,  c8,c9,sum[8]);
+    FullAdder FA9(inputA[9], b9,  c9,ca,sum[9]);
+    FullAdder FAa(inputA[10],ba,  ca,cb,sum[10]);
+    FullAdder FAb(inputA[11],bb,  cb,cc,sum[11]);
+    FullAdder FAc(inputA[12],bc,  cc,cd,sum[12]);
+    FullAdder FAd(inputA[13],bd,  cd,ce,sum[13]);
+    FullAdder FAe(inputA[14],be,  ce,cf,sum[14]);
+    FullAdder FAf(inputA[15],bf,  cf,c00,sum[15]);
+	
+    assign carry=c00;
+    assign overflow=c00^cf;
+	
+endmodule
+
+
+
+module multiplier(inpA, inpB, out);
+	input [15:0] inpA;
+	input [15:0] inpB;
+	output [31:0] out;
+	
+	wire [15:0] s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15;
+	wire c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15;
+	wire overflow;
+	
+	assign out[0] = inpA[0] & inpB[0];
+	
+	AddSub16B a({1'b0, ({15{inpA[0]}} & inpB[15:1])}, ({16{inpA[1]}} & inpB), 1'b0, s1, c1, overflow);
+	assign out[1] = s1[0];
+	
+	AddSub16B b({c1, s1[15:1]}, ({16{inpA[1]}} & inpB), 1'b0, s2, c2, overflow);
+	assign out[2] = s2[0];
+	
+	AddSub16B c({c2, s2[15:1]}, ({16{inpA[2]}} & inpB), 1'b0, s3, c3, overflow);
+	assign out[3] = s3[0];
+	
+	AddSub16B d({c3, s3[15:1]}, ({16{inpA[3]}} & inpB), 1'b0, s4, c4, overflow);
+	assign out[4] = s4[0];
+	
+	AddSub16B e({c4, s4[15:1]}, ({16{inpA[4]}} & inpB), 1'b0, s5, c5, overflow);
+	assign out[5] = s5[0];
+	
+	AddSub16B f({c5, s5[15:1]}, ({16{inpA[5]}} & inpB), 1'b0, s6, c6, overflow);
+	assign out[6] = s6[0];
+	
+	AddSub16B g({c6, s6[15:1]}, ({16{inpA[6]}} & inpB), 1'b0, s7, c7, overflow);
+	assign out[7] = s7[0];
+	
+	AddSub16B h({c7, s7[15:1]}, ({16{inpA[7]}} & inpB), 1'b0, s8, c8, overflow);
+	assign out[8] = s8[0];
+	
+	AddSub16B i({c8, s8[15:1]}, ({16{inpA[8]}} & inpB), 1'b0, s9, c9, overflow);
+	assign out[9] = s9[0];
+	
+	AddSub16B j({c9, s9[15:1]}, ({16{inpA[9]}} & inpB), 1'b0, s10, c10, overflow);
+	assign out[10] = s10[0];
+	
+	AddSub16B k({c10, s10[15:1]}, ({16{inpA[10]}} & inpB), 1'b0, s11, c11, overflow);
+	assign out[11] = s11[0];
+	
+	AddSub16B l({c11, s11[15:1]}, ({16{inpA[11]}} & inpB), 1'b0, s12, c12, overflow);
+	assign out[12] = s12[0];
+	
+	AddSub16B m({c12, s12[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s13, c13, overflow);
+	assign out[13] = s13[0];
+	
+	AddSub16B n({c13, s13[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s14, c14, overflow);
+	assign out[14] = s14[0];
+	
+	AddSub16B o({c14, s14[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s15, c15, overflow);
+	assign out[30:15] = s15;
+	assign out[31] = c15;
+	
+endmodule;
+
+
+
 module divisor(inputA,inputB,result,error);
 	input [15:0] inputA;
 	input [15:0] inputB;
@@ -171,6 +286,8 @@ module divisor(inputA,inputB,result,error);
 					1'b0;
 	
 endmodule
+
+
 
 module modulus(inputA,inputB,result,error);
 	input [15:0] inputA;
@@ -195,15 +312,14 @@ endmodule
 module BreadBoard(inputA,inputB,command,result,error);
 	input [15:0]inputA;
 	input [15:0]inputB;
+	
 	input [3:0] command;
 	output [31:0]result;
 	output [1:0] error;
-	
 
 	//Multiplexer
 	wire [15:0][31:0] channels ;
 	wire [15:0] onehotMux;
-
 
 	// Adder-Subtractor
 	wire [31:0] sum;
@@ -221,7 +337,8 @@ module BreadBoard(inputA,inputB,command,result,error);
 	wire errMod;
 	
 	Dec4x16 DecAlpha(command,onehotMux);
-	AddSub nept(inputA,inputB,mode,sum,carry,error[0]);
+	AddSub a(inputA,inputB,mode,sum,carry,error[0]);
+	multiplier u(inputA,inputB,mult);
 	divisor d(inputA, inputB,div,errDiv);
 	modulus m(inputA,inputB,mod,errMod);
 	Mux16x32b satu(channels,onehotMux,result);
@@ -249,7 +366,10 @@ module BreadBoard(inputA,inputB,command,result,error);
 	begin
 	mode=command[0];
 	end
+	
 endmodule
+
+
 
 //
 // TODOs: errors from adder-subtractor not working as expected. Multiplier not working as expexted. 
@@ -262,9 +382,7 @@ module TestBench();
   wire [31:0] result;
   wire [1:0] error;
   BreadBoard BB8(inputA,inputB,command,result,error);
-  
-
-  
+    
   initial begin
     assign inputA  = 16'b0111111111111111;
 	assign inputB  = 16'b0000000000000100;
