@@ -59,6 +59,29 @@ RESULT is a result of the Multiplxer and it gives a result of
 
 INTERFACES:
 
+AtoADDSUB Interface attatches INPUTA of 16 bit to the ADDER-SUBTRACTOR 
+BtoADDSUB Interface attatches INPUTB of 16 bit to the ADDER-SUBTRACTOR
+
+AtoMult Interface attaches InputA of 16 bits to the MULTIPLYER
+BtoMult Interface attaches InputA of 16 bits to the MULTIPLYER 
+
+AtoDiv Interface attaches InputA of 16 bits to the DIVIDER
+BtoDiv Interface attaches InputB of 16 bits to the DIVIDER
+
+AtoMOD Interface attaches InputA of 16 bits to the MODULUS
+BtoMOD Interface attaches InputB of 16 bits to the MODULUS
+
+COMtoDEC Interface connect the Command Input of 4 bits to the Decoder 
+
+ADDSUB Interface connects 32 Bits Sum to the ADDER-SUBTRACTOR to the MULTIPLEXOR
+MULT Interface   connects 32 Bits OUTput to the Multiplyer to the MULTIPLEXOR
+DIV Interface connects the DIVIDER to the OR GATE 
+MOD Interface connects the MODULUS to the OR GATE
+
+ORtoMUX_Interface connects the OR GATE to the MULTIPLEXOR
+
+
+
 WIRE errMOD known as the Error Mod bit that is used for the modulo thats in the modulus module.
 Wire errDIV A error bit that is used in the Divisor for the divison module
 wire oneHOTmux this is a value that is of the corresponding input(s) and thus the selectors with thei nputs are then bascially added together however I want to say concatinated.
@@ -79,7 +102,8 @@ There are 3 bits that are used to produce a result of two outputs. Which as the 
 AdderSubtractor The module that handles Addition and Subtraction of bits from input A and InputB also the outputs for this combinationa logic components is the carry and the sum. The 
 input [15:0]inputA;, input [15:0]inputB; are both 16 bits and the result will be just a combination of 32 bits. 
 
-Multiplier 
+MMULTIPLEXOR of 16bits inputs going to a 32bit output with a result to reach a final Output of a DISPLAY such as a screen. 
+
 
  
  
