@@ -12,24 +12,17 @@ the error from the Adder-Subtractor.
 
 
 INTERFACES:
-ADD Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR
-SUBT Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR
-MULT Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR
-DIV Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR
+ADD Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 0.
+SUBT Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 1.
+MULT Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR channel 2.
+DIV Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR channel 3.
+MOD Interface is a 32 bit wire that connects from the Modulus result to the MULTIPLEXOR channel 4.
 
 DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE 
 MOD_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE 
 
-ORtoMUX_Interface connects the OR GATE to the MULTIPLEXOR
-
-
-
-WIRE errMOD known as the Error Mod bit that is used for the modulo thats in the modulus module.
-Wire errDIV A error bit that is used in the Divisor for the divison module
-wire oneHOTmux this is a value that is of the corresponding input(s) and thus the selectors with thei nputs are then bascially added together however I want to say concatinated.
-wire channels this is the interface that allows the total of two sets of 16 bits to intermingle to become 32 bits for the multiplexor specifically.
-The RegMode determine which happens either the Adder or the subtractor tobe used on the Two inputs of A and B to be used to result in 32 bits. 
-
+DEC_to_MUX is a 16 bit one hot wire that connects from the Decoder to the Multiplexor select.
+Mode is a 1 bit register that holds the value of the first bit of OPCode and feeds into the Adder-Subtractor mode input.
 
 
 
