@@ -1,12 +1,9 @@
 INPUTS:
 
-InputA is the input of 16 bits that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
-
-Input B is the put of 16 bits that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
-
-Input Cin 
-
-OPCODE The digits that control the reults of the decoder as in it tells the decoder when to have an output for certain bits in the decoder. 
+InputA is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
+InputB is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
+OPCode is the input of 4 bits that represents a unique code to signify which calculation will be used as the result. All 4 bits feed into the decoder. Also,
+the least significant bit feeds into the Adder-Subtractor as the mode.
 
 
 OUTPUTS:
