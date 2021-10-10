@@ -72,22 +72,22 @@ module Mux16x32b(channels, select, b);
 	input      [15:0] select;
 	output      [31:0] b;
 
-	assign b =	({16{select[15]}} & channels[15]) | 
-				({16{select[14]}} & channels[14]) |
-				({16{select[13]}} & channels[13]) |
-				({16{select[12]}} & channels[12]) |
-				({16{select[11]}} & channels[11]) |
-				({16{select[10]}} & channels[10]) |
-				({16{select[ 9]}} & channels[ 9]) |
-			   ({16{select[ 8]}} & channels[ 8]) |
-			   ({16{select[ 7]}} & channels[ 7]) |
-			   ({16{select[ 6]}} & channels[ 6]) |
-			   ({16{select[ 5]}} & channels[ 5]) |
-			   ({16{select[ 4]}} & channels[ 4]) |
-			   ({16{select[ 3]}} & channels[ 3]) |
-			   ({16{select[ 2]}} & channels[ 2]) | 
-               	({16{select[ 1]}} & channels[ 1]) |
-               	({16{select[ 0]}} & channels[ 0]) ;
+	assign b =	({32{select[15]}} & channels[15]) | 
+				({32{select[14]}} & channels[14]) |
+				({32{select[13]}} & channels[13]) |
+				({32{select[12]}} & channels[12]) |
+				({32{select[11]}} & channels[11]) |
+				({32{select[10]}} & channels[10]) |
+				({32{select[ 9]}} & channels[ 9]) |
+			   ({32{select[ 8]}} & channels[ 8]) |
+			   ({32{select[ 7]}} & channels[ 7]) |
+			   ({32{select[ 6]}} & channels[ 6]) |
+			   ({32{select[ 5]}} & channels[ 5]) |
+			   ({32{select[ 4]}} & channels[ 4]) |
+			   ({32{select[ 3]}} & channels[ 3]) |
+			   ({32{select[ 2]}} & channels[ 2]) | 
+               	({32{select[ 1]}} & channels[ 1]) |
+               	({32{select[ 0]}} & channels[ 0]) ;
 
 endmodule
 
@@ -187,46 +187,46 @@ module multiplier(inpA, inpB, out);
 	AddSub16B a({1'b0, ({15{inpA[0]}} & inpB[15:1])}, ({16{inpA[1]}} & inpB), 1'b0, s1, c1, overflow);
 	assign out[1] = s1[0];
 	
-	AddSub16B b({c1, s1[15:1]}, ({16{inpA[1]}} & inpB), 1'b0, s2, c2, overflow);
+	AddSub16B b({c1, s1[15:1]}, ({16{inpA[2]}} & inpB), 1'b0, s2, c2, overflow);
 	assign out[2] = s2[0];
 	
-	AddSub16B c({c2, s2[15:1]}, ({16{inpA[2]}} & inpB), 1'b0, s3, c3, overflow);
+	AddSub16B c({c2, s2[15:1]}, ({16{inpA[3]}} & inpB), 1'b0, s3, c3, overflow);
 	assign out[3] = s3[0];
 	
-	AddSub16B d({c3, s3[15:1]}, ({16{inpA[3]}} & inpB), 1'b0, s4, c4, overflow);
+	AddSub16B d({c3, s3[15:1]}, ({16{inpA[4]}} & inpB), 1'b0, s4, c4, overflow);
 	assign out[4] = s4[0];
 	
-	AddSub16B e({c4, s4[15:1]}, ({16{inpA[4]}} & inpB), 1'b0, s5, c5, overflow);
+	AddSub16B e({c4, s4[15:1]}, ({16{inpA[5]}} & inpB), 1'b0, s5, c5, overflow);
 	assign out[5] = s5[0];
 	
-	AddSub16B f({c5, s5[15:1]}, ({16{inpA[5]}} & inpB), 1'b0, s6, c6, overflow);
+	AddSub16B f({c5, s5[15:1]}, ({16{inpA[6]}} & inpB), 1'b0, s6, c6, overflow);
 	assign out[6] = s6[0];
 	
-	AddSub16B g({c6, s6[15:1]}, ({16{inpA[6]}} & inpB), 1'b0, s7, c7, overflow);
+	AddSub16B g({c6, s6[15:1]}, ({16{inpA[7]}} & inpB), 1'b0, s7, c7, overflow);
 	assign out[7] = s7[0];
 	
-	AddSub16B h({c7, s7[15:1]}, ({16{inpA[7]}} & inpB), 1'b0, s8, c8, overflow);
+	AddSub16B h({c7, s7[15:1]}, ({16{inpA[8]}} & inpB), 1'b0, s8, c8, overflow);
 	assign out[8] = s8[0];
 	
-	AddSub16B i({c8, s8[15:1]}, ({16{inpA[8]}} & inpB), 1'b0, s9, c9, overflow);
+	AddSub16B i({c8, s8[15:1]}, ({16{inpA[9]}} & inpB), 1'b0, s9, c9, overflow);
 	assign out[9] = s9[0];
 	
-	AddSub16B j({c9, s9[15:1]}, ({16{inpA[9]}} & inpB), 1'b0, s10, c10, overflow);
+	AddSub16B j({c9, s9[15:1]}, ({16{inpA[10]}} & inpB), 1'b0, s10, c10, overflow);
 	assign out[10] = s10[0];
 	
-	AddSub16B k({c10, s10[15:1]}, ({16{inpA[10]}} & inpB), 1'b0, s11, c11, overflow);
+	AddSub16B k({c10, s10[15:1]}, ({16{inpA[11]}} & inpB), 1'b0, s11, c11, overflow);
 	assign out[11] = s11[0];
 	
-	AddSub16B l({c11, s11[15:1]}, ({16{inpA[11]}} & inpB), 1'b0, s12, c12, overflow);
+	AddSub16B l({c11, s11[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s12, c12, overflow);
 	assign out[12] = s12[0];
 	
-	AddSub16B m({c12, s12[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s13, c13, overflow);
+	AddSub16B m({c12, s12[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s13, c13, overflow);
 	assign out[13] = s13[0];
 	
-	AddSub16B n({c13, s13[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s14, c14, overflow);
+	AddSub16B n({c13, s13[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s14, c14, overflow);
 	assign out[14] = s14[0];
 	
-	AddSub16B o({c14, s14[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s15, c15, overflow);
+	AddSub16B o({c14, s14[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s15, c15, overflow);
 	assign out[30:15] = s15;
 	assign out[31] = c15;
 	
@@ -346,30 +346,30 @@ module TestBench();
   BreadBoard BB8(inputA,inputB,command,result,error);
     
   initial begin
-    assign inputA  = 16'b0111111111111111;
-	assign inputB  = 16'b0000000000000100;
+	assign inputA  = 16'b0111111111111111;
+	assign inputB  = 16'b0000000000000011;
 	assign command = 4'b0000;
-	#10;
-	
+	#60;
+
 	$display("%2d:%b,%2d:%b,ADD:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);  
    	assign command=4'b0001;
-	#10;		
+	#60;
 
 	$display("%2d:%b,%2d:%b,SUB:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
 	assign command=4'b0010;
-	#10;		
+	#60;
 
 	$display("%2d:%b,%2d:%b,MUL:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
 	assign command=4'b0011;
-	#10;		
+	#60;
 
 	$display("%2d:%b,%2d:%b,DIV:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
 	assign command=4'b0100;
-	#10;		
+	#60;
 
 	$display("%2d:%b,%2d:%b,MOD:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
 	
-	#60; 
+	#60;
 	$finish;
   end  
   
