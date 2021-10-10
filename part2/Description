@@ -11,61 +11,14 @@ Error is a two bit output where the most significant bit represents the error fr
 the error from the Adder-Subtractor.
 
 
-
-    input [3:0] command;
-    output [31:0]result;
-    output [1:0] error;
-
-    //Multiplexer
-    wire [15:0][31:0] channels ;
-    wire [15:0] onehotMux;
-
-    // Adder-Subtractor
-    wire [31:0] sum;
-    reg mode;
-
-    // Multiplier
-    wire [31:0] mult;
-
-    // Divisor
-    wire [31:0] div;
-    wire errDiv;
-
-    // Modulus
-    wire [31:0] mod;
-    wire errMod;
-
-    Dec4x16 DecAlpha(command,onehotMux);
-    AddSub32B a(inputA,inputB,mode,sum,carry,error[0]);
-    multiplier u(inputA,inputB,mult);
-    divisor d(inputA, inputB,div,errDiv);
-    modulus m(inputA,inputB,mod,errMod);
-    Mux16x32b satu(channels,onehotMux,result);
-
-
-
-
-
 INTERFACES:
+ADD Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR
+SUBT Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR
+MULT Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR
+DIV Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR
 
-AtoADDSUB Interface attatches INPUTA of 16 bit to the ADDER-SUBTRACTOR 
-BtoADDSUB Interface attatches INPUTB of 16 bit to the ADDER-SUBTRACTOR
-
-AtoMult Interface attaches InputA of 16 bits to the MULTIPLYER
-BtoMult Interface attaches InputA of 16 bits to the MULTIPLYER 
-
-AtoDiv Interface attaches InputA of 16 bits to the DIVIDER
-BtoDiv Interface attaches InputB of 16 bits to the DIVIDER
-
-AtoMOD Interface attaches InputA of 16 bits to the MODULUS
-BtoMOD Interface attaches InputB of 16 bits to the MODULUS
-
-COMtoDEC Interface connect the Command Input of 4 bits to the Decoder 
-
-ADDSUB Interface connects 32 Bits Sum to the ADDER-SUBTRACTOR to the MULTIPLEXOR
-MULT Interface   connects 32 Bits OUTput to the Multiplyer to the MULTIPLEXOR
-DIV Interface connects the DIVIDER to the OR GATE 
-MOD Interface connects the MODULUS to the OR GATE
+DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE 
+MOD_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE 
 
 ORtoMUX_Interface connects the OR GATE to the MULTIPLEXOR
 
