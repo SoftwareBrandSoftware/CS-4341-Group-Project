@@ -1,17 +1,17 @@
-INPUTS:
+INPUTS: 2.2.2.1
 InputA is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
 InputB is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
 OPCode is the input of 4 bits that represents a unique code to signify which calculation will be used as the result. All 4 bits feed into the decoder. Also,
 the least significant bit feeds into the Adder-Subtractor as the mode.
 
 
-OUTPUTS:
+OUTPUTS: 2.2.2.2
 Result is a 32 bit output representing the result of the chosen arithmetic calculation.
 Error is a two bit output where the most significant bit represents the error from the Divider or the Modulus modules and the least significant bit represents
 the error from the Adder-Subtractor.
 
 
-INTERFACES:
+INTERFACES: 2.2.2.3
 ADD Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 0.
 SUBT Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 1.
 MULT Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR channel 2.
@@ -26,7 +26,7 @@ Mode is a 1 bit register that holds the value of the first bit of OPCode and fee
 
 
 
-COMBINATIONAL LOGIC COMPONENTS: 
+COMBINATIONAL LOGIC COMPONENTS: 2.2.2.4
 HalfAdder is a half-adder that is used when constructing the full adder.
 FullAdder is a full-adder that is used when constructing the adder-subtractor.
 AddSub16B is a 16 bit adder-subtractor that is used when constructing the AddSub32B and Multiplier modules.
@@ -46,7 +46,7 @@ Modulus is a 16x16 bit behavioral component to calculate modulus. If modulus-by-
 
 
  
- 
+ Circuit Diagram: 2.2.2.5
   
   
   
