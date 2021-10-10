@@ -301,6 +301,10 @@ module modulus(inputA,inputB,result,error);
 	
 	assign error = (inputB == 16'b0000000000000000) ? 1'b1 :
 					1'b0;
+					
+	// For purpose of using the other number to have a modulus.
+	 // assign result = (inpA == 16'a0000000000000000) ? 16'a0000000000000000:
+         //                          inpA%inpB;
 	
 endmodule
 
