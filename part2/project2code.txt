@@ -167,7 +167,7 @@ module AddSub16B(inputA,inputB,mode,sum,carry,overflow);
     FullAdder FAf(inputA[15],bf,  cf,c00,sum[15]);
 	
     assign carry=c00;
-    assign overflow=c00^cf;
+    assign overflow=c00^mode;
 	
 endmodule
 
