@@ -1,5 +1,4 @@
 INPUTS:
-
 InputA is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
 InputB is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier.
 OPCode is the input of 4 bits that represents a unique code to signify which calculation will be used as the result. All 4 bits feed into the decoder. Also,
@@ -7,16 +6,9 @@ the least significant bit feeds into the Adder-Subtractor as the mode.
 
 
 OUTPUTS:
-
-SUM is an output that is used to result in a sum of  inputs for example the FullAdder uses it.
-SUN is 
-
-ONEHOT is an output that consists of the combination of a single 1 bit and which all other bits must be 0 in terms of the output.
-ONEHOT is 16 bits in size.
-
-RESULT is a result of the Multiplxer and it gives a result of 
-
-
+Result is a 32 bit output representing the result of the chosen arithmetic calculation.
+Error is a two bit output where the most significant bit represents the error from the Divider or the Modulus modules and the least significant bit represents
+the error from the Adder-Subtractor.
 
 
 
