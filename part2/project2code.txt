@@ -304,7 +304,7 @@ module modulus(inputA,inputB,result,error);
 					
 	// For purpose of using the other number to have a modulus.
 	 // assign result = (inpA == 16'a0000000000000000) ? 16'a0000000000000000:
-         //                          inpA%inpB;
+         //                          inpB%inpA;
 	
 endmodule
 
