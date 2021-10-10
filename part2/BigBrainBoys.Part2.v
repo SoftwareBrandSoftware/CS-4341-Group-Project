@@ -39,10 +39,8 @@ module FullAdder(A,B,C,carry,sum);
 //---------------------------------------------
 	always @(*) 
 	  begin
-	    sum=s1;//
-		sum= A^B^C;
-	    carry=c1|c0;//
-		carry= ((A^B)&C)|(A&B);  
+	    sum=s1;
+	    carry=c1|c0;
 	  end
 //---------------------------------------------
 	
@@ -61,7 +59,7 @@ module AddSub32B(inputA,inputB,mode,sum,carry,overflow);
     output overflow;
     
     AddSub16B a(inputA,inputB,mode,sum[15:0],carry,overflow);
-	assign sum[31:16] = 16'b0000000000000000;
+	assign sum[31:16] = {carry, 16'b0000000000000000};
  
 endmodule
 
@@ -312,7 +310,7 @@ module BreadBoard(inputA,inputB,command,result,error);
 	
 	always @(*)  
 	begin
-	mode=command[0];
+		mode=~command[3]&~command[2]&~command[1]& command[0];
 	end
 	
 endmodule
