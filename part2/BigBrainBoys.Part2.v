@@ -59,7 +59,8 @@ module AddSub32B(inputA,inputB,mode,sum,carry,overflow);
     output overflow;
     
     AddSub16B a(inputA,inputB,mode,sum[15:0],carry,overflow);
-	assign sum[31:16] = {carry, 16'b0000000000000000};
+	assign sum[16] = carry;
+	assign sum[31:17] = 16'b000000000000000;
  
 endmodule
 
