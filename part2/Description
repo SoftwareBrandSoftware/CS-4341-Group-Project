@@ -12,11 +12,11 @@ the error from the Adder-Subtractor.
 
 
 INTERFACES: 2.2.2.3
-ADD Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 0.
-SUBT Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 1.
-MULT Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR channel 2.
-DIV Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR channel 3.
-MOD Interface is a 32 bit wire that connects from the Modulus result to the MULTIPLEXOR channel 4.
+ADDtoMUX Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 0.
+SUBtoMUX Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 1.
+MULTtoMUX Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR channel 2.
+DIVtoMUX Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR channel 3.
+MODtoMUX Interface is a 32 bit wire that connects from the Modulus result to the MULTIPLEXOR channel 4.
 
 DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE 
 MOD_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE 
