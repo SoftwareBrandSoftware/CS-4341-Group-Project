@@ -331,30 +331,42 @@ module TestBench();
   BreadBoard BB8(inputA,inputB,command,result,error);
     
   initial begin
-	assign inputA  = 16'b0111111111111111;
-	assign inputB  = 16'b0000000000000011;
+	assign inputA  = 16'b0000000000001111;
+	assign inputB  = 16'b0000000001111110;
 	assign command = 4'b0000;
-	#60;
-
-	$display("%2d:%b,%2d:%b,ADD:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);  
+	#10;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,ADD:%b,Result:  %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error);  
    	assign command=4'b0001;
-	#60;
-
-	$display("%2d:%b,%2d:%b,SUB:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
+	#10;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,SUB:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
 	assign command=4'b0010;
-	#60;
-
-	$display("%2d:%b,%2d:%b,MUL:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
+	#10;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,MUL:%b,Result: %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
 	assign command=4'b0011;
-	#60;
-
-	$display("%2d:%b,%2d:%b,DIV:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
+	#10;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,DIV:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
 	assign command=4'b0100;
-	#60;
-
-	$display("%2d:%b,%2d:%b,MOD:%b,%2d:%b,E:%b",inputA,inputA,inputB,inputB,command,result,result,error);
-	
-	#60;
+	#10;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,MOD:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	#10;
+	assign inputA  = 16'b1111001111111111;
+	assign inputB  = 16'b0110010001111110;
+	assign command = 4'b0000;
+	#10;
+	$display("InputA:%2d:%b,InputB:%2d:%b,ADD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+   	assign command=4'b0001;
+	#10;
+	$display("InputA:%2d:%b,InputB:%2d:%b,SUB:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	assign command=4'b0010;
+	#10;
+	$display("InputA:%2d:%b,InputB:%2d:%b,MUL:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	assign command=4'b0011;
+	#10;
+	$display("InputA:%2d:%b,InputB:%2d:%b,DIV:%b,Result:        %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	assign command=4'b0100;
+	#10;
+	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result     :%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	#10;
 	$finish;
   end  
   
