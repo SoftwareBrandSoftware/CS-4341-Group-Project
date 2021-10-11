@@ -19,7 +19,7 @@ DIVtoMUX Interface is a 32 bit wire that connects from the Divider result to the
 MODtoMUX Interface is a 32 bit wire that connects from the Modulus result to the MULTIPLEXOR channel 4.
 
 DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE 
-MOD_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE 
+Mod_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE 
 
 DEC_to_MUX is a 16 bit one hot wire that connects from the Decoder to the Multiplexor select.
 Mode is a 1 bit register that holds the value of the first bit of OPCode and feeds into the Adder-Subtractor mode input.
@@ -41,7 +41,7 @@ Dec4x16 is a 4-bit to 16-bit-one-hot decoder that takes 4 bits from the input OP
 to the multplexor.
 
 Multiplier is a 16x16 bit structured multiplier constructed using 15 16-bit adder-subtractors. The result is sent to the multiplexor channel 3.
-Divisor is a 16x16 bit behavioral divider. If divide-by-zero occurs, the divider will return 0 as the result and 1 as the error.
+Divider is a 16x16 bit behavioral divider. If divide-by-zero occurs, the divider will return 0 as the result and 1 as the error.
 Modulus is a 16x16 bit behavioral component to calculate modulus. If modulus-by-zero occurs, Modulus will return 0 as the result and 1 as the error.
 
 
