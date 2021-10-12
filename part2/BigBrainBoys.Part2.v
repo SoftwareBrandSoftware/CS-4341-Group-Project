@@ -318,54 +318,113 @@ endmodule
 
 
 
-//
-// TODOs: errors from adder-subtractor not working as expected. Multiplier not working as expexted. 
-//        Naming conventions need to be established.
+module BreadBoard(inputA,inputB,OpCode,Result,Error);
+	input [15:0]inputA;
+	input [15:0]inputB;
+	
+	input [3:0] OpCode;
+	output [31:0] Result;
+	output [1:0] Error;
+
+	//Multiplexer
+	wire [15:0][31:0] channels ;
+	wire [15:0] DECtoMUX;
+
+	// Adder-Subtractor
+	wire [31:0] ADDtoMUX;
+	reg mode;
+	
+	// Multiplier
+	wire [31:0] MULTtoMUX;
+	
+	// Divisor
+	wire [31:0] DIVtoMUX;
+	wire DIV_err;
+	
+	// Modulus
+	wire [31:0] MODtoMUX;
+	wire MOD_err;
+	
+	Dec4x16 DecAlpha(OpCode,DECtoMUX);
+	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,Error[0]);
+	multiplier Multiplier(inputA,inputB,MULTtoMUX);
+	divisor Divider(inputA, inputB,DIVtoMUX,DIV_err);
+	modulus Modulus(inputA,inputB,MODtoMUX,MOD_err);
+	Mux16x32b Multiplexor(channels,DECtoMUX,Result);
+	
+	assign channels[ 0]=ADDtoMUX;//Addition
+	assign channels[ 1]=ADDtoMUX;//Subtraction
+	assign channels[ 2]=MULTtoMUX;
+	assign channels[ 3]=DIVtoMUX;
+	assign channels[ 4]=MODtoMUX;
+	assign channels[ 5]=0;//GROUND=0
+	assign channels[ 6]=0;//GROUND=0
+	assign channels[ 7]=0;//GROUND=0
+	assign channels[ 8]=0;//GROUND=0
+	assign channels[ 9]=0;//GROUND=0
+	assign channels[10]=0;//GROUND=0
+	assign channels[11]=0;//GROUND=0
+	assign channels[12]=0;//GROUND=0
+	assign channels[13]=0;//GROUND=0
+	assign channels[14]=0;//GROUND=0
+	assign channels[15]=0;//GROUND=0
+	
+	assign Error[1]=DIV_err | MOD_err;
+	
+	always @(*)  
+	begin
+		mode=~OpCode[3]&~OpCode[2]&~OpCode[1]&OpCode[0];
+	end
+	
+endmodule
+
+
+
 module TestBench();
  
   reg [15:0] inputA;
   reg [15:0] inputB;
-  reg [3:0] command;
-  wire [31:0] result;
-  wire [1:0] error;
-  BreadBoard BB8(inputA,inputB,command,result,error);
+  reg [3:0] OpCode;
+  wire [31:0] Result;
+  wire [1:0] Error;
+  BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
     
   initial begin
 	assign inputA  = 16'b0000000000001111;
 	assign inputB  = 16'b0000000001111110;
-	assign command = 4'b0000;
+	assign OpCode = 4'b0000;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,ADD:%b,Result:  %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error);  
-   	assign command=4'b0001;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,ADD:%b,Result:  %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error);  
+   	assign OpCode=4'b0001;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,SUB:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0010;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,SUB:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0010;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,MUL:%b,Result: %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0011;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,MUL:%b,Result: %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0011;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,DIV:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0100;
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,DIV:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0100;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,MOD:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	$display("InputA:   %2d:%b,InputB:  %2d:%b,MOD:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	#10;
 	assign inputA  = 16'b1111001111111111;
 	assign inputB  = 16'b0110010001111110;
-	assign command = 4'b0000;
+	assign OpCode = 4'b0000;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,ADD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-   	assign command=4'b0001;
+	$display("InputA:%2d:%b,InputB:%2d:%b,ADD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+   	assign OpCode=4'b0001;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,SUB:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0010;
+	$display("InputA:%2d:%b,InputB:%2d:%b,SUB:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0010;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,MUL:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0011;
+	$display("InputA:%2d:%b,InputB:%2d:%b,MUL:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0011;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,DIV:%b,Result:        %2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
-	assign command=4'b0100;
+	$display("InputA:%2d:%b,InputB:%2d:%b,DIV:%b,Result:        %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	assign OpCode=4'b0100;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result     :%2d:%b,Error:%b",inputA,inputA,inputB,inputB,command,result,result,error); 
+	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result     :%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	#10;
 	$finish;
   end  
