@@ -359,7 +359,7 @@ module TestBench();
 	$display("InputA:%2d:%b,InputB:%2d:%b,DIV:%b,Result:        %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0100;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result     :%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	#10;
 	$finish;
   end  
