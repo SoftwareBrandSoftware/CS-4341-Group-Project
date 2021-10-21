@@ -1,4 +1,19 @@
 //=============================================
+// D Flip-Flop
+//=============================================
+module DFF(clk,rst,pst,in,out);
+  
+  input  clk;
+  input  in;
+  input rst;
+  input pst;
+  output out;
+  reg    out;
+  
+  always @(posedge clk)//<--This is the statement that makes the circuit behave with TIME
+  out =  in;//(in|pst)&(~rst);
+ endmodule
+//=============================================
 // Half Adder
 //=============================================
 module HalfAdder(A,B,carry,sum);
