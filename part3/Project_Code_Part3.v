@@ -74,8 +74,22 @@ module AddSub32B(inputA,inputB,mode,sum,carry,overflow);
     output overflow;
     
     AddSub16B a(inputA,inputB,mode,sum[15:0],carry,overflow);
-	assign sum[16] = carry & ~mode;
-	assign sum[31:17] = 15'b000000000000000;
+	assign sum[16] = carry;
+	assign sum[17] = carry;
+	assign sum[18] = carry;
+	assign sum[19] = carry;
+	assign sum[20] = carry;
+	assign sum[21] = carry;
+	assign sum[22] = carry;
+	assign sum[23] = carry;
+	assign sum[24] = carry;
+	assign sum[25] = carry;
+	assign sum[26] = carry;
+	assign sum[27] = carry;
+	assign sum[28] = carry;
+	assign sum[29] = carry;
+	assign sum[30] = carry;
+	assign sum[31] = carry;
  
 endmodule
 
@@ -181,7 +195,7 @@ module AddSub16B(inputA,inputB,mode,sum,carry,overflow);
     FullAdder FAf(inputA[15],bf,  cf,c00,sum[15]);
 	
     assign carry=c00;
-    assign overflow=c00^mode;
+    assign overflow=c00^cf;
 	
 endmodule
 
