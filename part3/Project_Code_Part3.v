@@ -282,6 +282,34 @@ endmodule
 
 
 
+module XOR(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[0] = inputA[0] ^ inputB[0];
+	assign result[1] = inputA[1] ^ inputB[1];
+	assign result[2] = inputA[2] ^ inputB[2];
+	assign result[3] = inputA[3] ^ inputB[3];
+	assign result[4] = inputA[4] ^ inputB[4];
+	assign result[5] = inputA[5] ^ inputB[5];
+	assign result[6] = inputA[6] ^ inputB[6];
+	assign result[7] = inputA[7] ^ inputB[7];
+	assign result[8] = inputA[8] ^ inputB[8];
+	assign result[9] = inputA[9] ^ inputB[9];
+	assign result[10] = inputA[10] ^ inputB[10];
+	assign result[11] = inputA[11] ^ inputB[11];
+	assign result[12] = inputA[12] ^ inputB[12];
+	assign result[13] = inputA[13] ^ inputB[13];
+	assign result[14] = inputA[14] ^ inputB[14];
+	assign result[15] = inputA[15] ^ inputB[15];
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+
+
 module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	input [15:0]inputA;
 	input [15:0]inputB;
