@@ -325,6 +325,7 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	// Adder-Subtractor
 	wire [31:0] ADDtoMUX;
 	reg mode;
+	wire overflow;
 	
 	// Multiplier
 	wire [31:0] MULTtoMUX;
@@ -338,7 +339,7 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	wire MOD_err;
 	
 	Dec4x16 DecAlpha(OpCode,DECtoMUX);
-	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,Error[0]);
+	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,overflow);
 	multiplier Multiplier(inputA,inputB,MULTtoMUX);
 	divisor Divider(inputA, inputB,DIVtoMUX,DIV_err);
 	modulus Modulus(inputA,inputB,MODtoMUX,MOD_err);
@@ -361,7 +362,8 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	assign channels[14]=0;//GROUND=0
 	assign channels[15]=0;//GROUND=0
 	
-	assign Error[1]=DIV_err | MOD_err;
+	assign Error[0]=overflow & (DECtoMUX[0] | DECtoMUX[1]);
+	assign Error[1]=(DIV_err & DECtoMUX[3]) | (MOD_err & DECtoMUX[4]);
 	
 	always @(*)  
 	begin
