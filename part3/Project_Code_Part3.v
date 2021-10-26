@@ -1,7 +1,7 @@
 //=============================================
 // D Flip-Flop
 //=============================================
-module DFF(clk,rst,pst,in,out);
+module DFF(clk,in,out);
   
   parameter n =1; //width  Are we supposed to change to 32bits? Because we have a 32Bit Memory Register? 
   input  clk;
