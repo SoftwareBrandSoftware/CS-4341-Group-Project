@@ -311,6 +311,9 @@ endmodule
 
 
 module BreadBoard(inputA,inputB,OpCode,Result,Error);
+	
+	DFF [31:0] state(clk,  next, state);
+	
 	input [15:0]inputA;
 	input [15:0]inputB;
 	
