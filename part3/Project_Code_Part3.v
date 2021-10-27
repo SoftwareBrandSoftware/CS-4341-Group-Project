@@ -442,7 +442,7 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	assign channels[11]=NOTtoMUX;//GROUND=0
 	assign channels[12]=0;//GROUND=0
 	assign channels[13]=0;//GROUND=0
-	assign channels[14]=1;//preset
+	assign channels[14]={32{1'b1}};;//preset
 	assign channels[15]=0;//reset
 	
 	assign Error[0]=overflow & (DECtoMUX[0] | DECtoMUX[1]);
