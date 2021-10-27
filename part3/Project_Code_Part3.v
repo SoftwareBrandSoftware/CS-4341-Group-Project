@@ -385,6 +385,21 @@ module TestBench();
   wire [31:0] Result;
   wire [1:0] Error;
   BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
+	
+  initial begin
+	  clk =0;
+	  forever
+		  begin 
+			  clk = 0;
+			  #5
+			  clk = 1;
+			  #5
+                          clk = 2;
+		          #10
+		  end
+  end
+	   
+			  
     
   initial begin
 	assign inputA  = 16'b0000000000001111;
