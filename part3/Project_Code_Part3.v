@@ -309,11 +309,72 @@ module XOR(inputA,inputB,result);
 endmodule
 
 
+module AND(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = inputA & inputB;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+module OR(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = inputA | inputB;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+module NAND(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = inputA ~& inputB;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+module NOR(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = inputA ~| inputB;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+module XNOR(inputA,inputB,result);
+	input [15:0] inputA;
+	input [15:0] inputB;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = inputA ~^ inputB;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
+
+module NOT(inputA,result);
+	input [15:0] inputA;
+	
+	output [31:0] result;
+	
+	assign result[15:0] = ~inputA;
+	assign result[31:16] = 16'b0000000000000000;
+	
+endmodule
 
 module BreadBoard(inputA,inputB,OpCode,Result,Error);
-	
-	DFF [31:0] state(clk,  next, state);
-	
 	input [15:0]inputA;
 	input [15:0]inputB;
 	
@@ -341,6 +402,16 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	wire [31:0] MODtoMUX;
 	wire MOD_err;
 	
+	// Logic Gates
+	wire [31:0] XORtoMUX;
+	wire [31:0] ORtoMUX;
+	wire [31:0] XNORtoMUX;
+	wire [31:0] NORtoMUX;
+	wire [31:0] ANDtoMUX;
+	wire [31:0] NANDtoMUX;
+	wire [31:0] NOTtoMUX;
+	
+	
 	Dec4x16 DecAlpha(OpCode,DECtoMUX);
 	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,overflow);
 	multiplier Multiplier(inputA,inputB,MULTtoMUX);
@@ -348,22 +419,31 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	modulus Modulus(inputA,inputB,MODtoMUX,MOD_err);
 	Mux16x32b Multiplexor(channels,DECtoMUX,Result);
 	
+	XOR xorg(inputA,inputB,XORtoMUX);
+	XNOR xnorg(inputA,inputB,XNORtoMUX);
+	OR org(inputA,inputB,ORtoMUX);
+	NOR norg(inputA,inputB,NORtoMUX);
+	AND andg(inputA,inputB,ANDtoMUX);
+	NAND nandg(inputA,inputB,NANDtoMUX);
+	NOT notg(inputA,NOTtoMUX);
+	
+	
 	assign channels[ 0]=ADDtoMUX;//Addition
 	assign channels[ 1]=ADDtoMUX;//Subtraction
 	assign channels[ 2]=MULTtoMUX;
 	assign channels[ 3]=DIVtoMUX;
 	assign channels[ 4]=MODtoMUX;
-	assign channels[ 5]=0;//GROUND=0
-	assign channels[ 6]=0;//GROUND=0
-	assign channels[ 7]=0;//GROUND=0
-	assign channels[ 8]=0;//GROUND=0
-	assign channels[ 9]=0;//GROUND=0
-	assign channels[10]=0;//GROUND=0
-	assign channels[11]=0;//GROUND=0
+	assign channels[ 5]=XORtoMUX;//GROUND=0
+	assign channels[ 6]=XNORtoMUX;//GROUND=0
+	assign channels[ 7]=ORtoMUX;//GROUND=0
+	assign channels[ 8]=NORtoMUX;//GROUND=0
+	assign channels[ 9]=ANDtoMUX;//GROUND=0
+	assign channels[10]=NANDtoMUX;//GROUND=0
+	assign channels[11]=NOTtoMUX;//GROUND=0
 	assign channels[12]=0;//GROUND=0
 	assign channels[13]=0;//GROUND=0
-	assign channels[14]=0;//GROUND=0
-	assign channels[15]=0;//GROUND=0
+	assign channels[14]=1;//preset
+	assign channels[15]=0;//reset
 	
 	assign Error[0]=overflow & (DECtoMUX[0] | DECtoMUX[1]);
 	assign Error[1]=(DIV_err & DECtoMUX[3]) | (MOD_err & DECtoMUX[4]);
