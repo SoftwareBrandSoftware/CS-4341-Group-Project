@@ -467,6 +467,7 @@ module TestBench();
   BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
 	
   initial begin
+	  #0
 	  clk =0;
 	  forever
 		  begin 
