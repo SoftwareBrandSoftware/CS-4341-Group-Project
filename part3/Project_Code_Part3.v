@@ -1,13 +1,14 @@
 //=============================================
 // D Flip-Flop
 //=============================================
-module DFF(clk,in,out);
+module DFF(clk,in,out,nout);
   
   parameter n =1; //width  Are we supposed to change to 32bits? Because we have a 32Bit Memory Register? 
   input reset; // Added to have a reset I'm not 100% sure we need it, but looking at DflipFlop in diagrams there is a reset...
   input  clk;
   input  [n-1:0] in;
   output [n-1:0] out;
+  output [n-1:0] nout;
   reg    [n-1:0] out;
   
 	always @(posedge clk)//<--This is the statement that makes the circuit behave with TIME
@@ -18,7 +19,7 @@ module DFF(clk,in,out);
 	          out <= in;
 	  end
 			 
-	  assign  out = !out; 
+	 assign  nout = !out; 
  endmodule
 
 //=============================================
