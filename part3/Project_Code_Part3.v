@@ -473,9 +473,7 @@ module TestBench();
 			  clk = 0;
 			  #5
 			  clk = 1;
-			  #5
-                          clk = 2;
-		          #10
+			  #10
 		  end
   end
 	   
