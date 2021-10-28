@@ -10,7 +10,7 @@ module DFF(clk,in,out);
   output [n-1:0] out;
   reg    [n-1:0] out;
   
-	always @(posedge clk, posedge reset )//<--This is the statement that makes the circuit behave with TIME
+	always @(posedge clk)//<--This is the statement that makes the circuit behave with TIME
 	 begin 
 		 if(reset)
 		  out <= 0;
