@@ -471,21 +471,21 @@ module TestBench();
   reg [15:0] inputA;
   reg [15:0] inputB;
   reg [3:0] OpCode;
+  reg clk;
   wire [31:0] Result;
   wire [1:0] Error;
   BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
 	
-  initial begin
-	  #0
-	  clk =0;
+  initial
+	begin
 	  forever
 		  begin 
 			  clk = 0;
-			  #5
+			  #5;
 			  clk = 1;
-			  #10
+			  #10;
 		  end
-  end
+	end
 	   
 			  
     
