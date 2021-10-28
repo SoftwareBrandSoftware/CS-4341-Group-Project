@@ -19,7 +19,7 @@ module DFF(clk,in,out);
 	          out <= in
 	  end
 			 
-	  assign  out =!out; 
+	  assign  out = !out; 
  endmodule
 
 //=============================================
