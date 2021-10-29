@@ -19,7 +19,7 @@ module DFF(clk,in,out,nout);
 	          out <= in;
 	  end
 			 
-	 assign  nout = !out; 
+	  assign  nout = !out; 
  endmodule
 
 //=============================================
@@ -83,22 +83,22 @@ module AddSub32B(inputA,inputB,mode,sum,carry,overflow);
     output overflow;
     
     AddSub16B a(inputA,inputB,mode,sum[15:0],carry,overflow);
-	assign sum[16] = carry;
-	assign sum[17] = carry;
-	assign sum[18] = carry;
-	assign sum[19] = carry;
-	assign sum[20] = carry;
-	assign sum[21] = carry;
-	assign sum[22] = carry;
-	assign sum[23] = carry;
-	assign sum[24] = carry;
-	assign sum[25] = carry;
-	assign sum[26] = carry;
-	assign sum[27] = carry;
-	assign sum[28] = carry;
-	assign sum[29] = carry;
-	assign sum[30] = carry;
-	assign sum[31] = carry;
+	assign sum[16] = sum[15] ^ overflow;
+	assign sum[17] = sum[15] ^ overflow;
+	assign sum[18] = sum[15] ^ overflow;
+	assign sum[19] = sum[15] ^ overflow;
+	assign sum[20] = sum[15] ^ overflow;
+	assign sum[21] = sum[15] ^ overflow;
+	assign sum[22] = sum[15] ^ overflow;
+	assign sum[23] = sum[15] ^ overflow;
+	assign sum[24] = sum[15] ^ overflow;
+	assign sum[25] = sum[15] ^ overflow;
+	assign sum[26] = sum[15] ^ overflow;
+	assign sum[27] = sum[15] ^ overflow;
+	assign sum[28] = sum[15] ^ overflow;
+	assign sum[29] = sum[15] ^ overflow;
+	assign sum[30] = sum[15] ^ overflow;
+	assign sum[31] = sum[15] ^ overflow;
  
 endmodule
 
@@ -215,25 +215,41 @@ module multiplier(inpA, inpB, out);
 	input [15:0] inpB;
 	output [31:0] out;
 	
-	wire [15:0] s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15;
-	wire c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15;
+	wire [15:0] s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31;
+	wire c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31;
 	wire overflow;
 	
-	AddSub16B a({1'b0,({15{inpA[0]}} & inpB[15:1])}, ({16{inpA[1]}} & inpB), 1'b0, s1, c1, overflow);
-	AddSub16B b({c1,  s1[15:1]},  ({16{inpA[2]}} & inpB),  1'b0, s2,  c2,  overflow);
-	AddSub16B c({c2,  s2[15:1]},  ({16{inpA[3]}} & inpB),  1'b0, s3,  c3,  overflow);
-	AddSub16B d({c3,  s3[15:1]},  ({16{inpA[4]}} & inpB),  1'b0, s4,  c4,  overflow);
-	AddSub16B e({c4,  s4[15:1]},  ({16{inpA[5]}} & inpB),  1'b0, s5,  c5,  overflow);
-	AddSub16B f({c5,  s5[15:1]},  ({16{inpA[6]}} & inpB),  1'b0, s6,  c6,  overflow);
-	AddSub16B g({c6,  s6[15:1]},  ({16{inpA[7]}} & inpB),  1'b0, s7,  c7,  overflow);
-	AddSub16B h({c7,  s7[15:1]},  ({16{inpA[8]}} & inpB),  1'b0, s8,  c8,  overflow);
-	AddSub16B i({c8,  s8[15:1]},  ({16{inpA[9]}} & inpB),  1'b0, s9,  c9,  overflow);
-	AddSub16B j({c9,  s9[15:1]},  ({16{inpA[10]}} & inpB), 1'b0, s10, c10, overflow);
-	AddSub16B k({c10, s10[15:1]}, ({16{inpA[11]}} & inpB), 1'b0, s11, c11, overflow);
-	AddSub16B l({c11, s11[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s12, c12, overflow);
-	AddSub16B m({c12, s12[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s13, c13, overflow);
-	AddSub16B n({c13, s13[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s14, c14, overflow);
-	AddSub16B o({c14, s14[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s15, c15, overflow);
+	AddSub16B as0({1'b0,({15{inpA[0]}} & inpB[15:1])}, ({16{inpA[1]}} & inpB), 1'b0, s1, c1, overflow);
+	AddSub16B as1({c1,  s1[15:1]},  ({16{inpA[2]}} & inpB),  1'b0, s2,  c2,  overflow);
+	AddSub16B as2({c2,  s2[15:1]},  ({16{inpA[3]}} & inpB),  1'b0, s3,  c3,  overflow);
+	AddSub16B as3({c3,  s3[15:1]},  ({16{inpA[4]}} & inpB),  1'b0, s4,  c4,  overflow);
+	AddSub16B as4({c4,  s4[15:1]},  ({16{inpA[5]}} & inpB),  1'b0, s5,  c5,  overflow);
+	AddSub16B as5({c5,  s5[15:1]},  ({16{inpA[6]}} & inpB),  1'b0, s6,  c6,  overflow);
+	AddSub16B as6({c6,  s6[15:1]},  ({16{inpA[7]}} & inpB),  1'b0, s7,  c7,  overflow);
+	AddSub16B as7({c7,  s7[15:1]},  ({16{inpA[8]}} & inpB),  1'b0, s8,  c8,  overflow);
+	AddSub16B as8({c8,  s8[15:1]},  ({16{inpA[9]}} & inpB),  1'b0, s9,  c9,  overflow);
+	AddSub16B as9({c9,  s9[15:1]},  ({16{inpA[10]}} & inpB), 1'b0, s10, c10, overflow);
+	AddSub16B as10({c10, s10[15:1]}, ({16{inpA[11]}} & inpB), 1'b0, s11, c11, overflow);
+	AddSub16B as11({c11, s11[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s12, c12, overflow);
+	AddSub16B as12({c12, s12[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s13, c13, overflow);
+	AddSub16B as13({c13, s13[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s14, c14, overflow);
+	AddSub16B as14({c14, s14[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s15, c15, overflow);
+	AddSub16B as15({c15, s15[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s16, c16, overflow);
+	AddSub16B as16({c16, s16[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s17, c17, overflow);
+	AddSub16B as17({c17, s17[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s18, c18, overflow);
+	AddSub16B as18({c18, s18[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s19, c19, overflow);
+	AddSub16B as19({c19, s19[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s20, c20, overflow);
+	AddSub16B as20({c20, s20[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s21, c21, overflow);
+	AddSub16B as21({c21, s21[15:1]}, ({16{inpA[12]}} & inpB), 1'b0, s22, c22, overflow);
+	AddSub16B as22({c22, s22[15:1]}, ({16{inpA[13]}} & inpB), 1'b0, s23, c23, overflow);
+	AddSub16B as23({c23, s23[15:1]}, ({16{inpA[14]}} & inpB), 1'b0, s24, c24, overflow);
+	AddSub16B as24({c24, s24[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s25, c25, overflow);
+	AddSub16B as25({c25, s25[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s26, c26, overflow);
+	AddSub16B as26({c26, s26[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s27, c27, overflow);
+	AddSub16B as27({c27, s27[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s28, c28, overflow);
+	AddSub16B as28({c28, s28[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s29, c29, overflow);
+	AddSub16B as29({c29, s29[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s30, c30, overflow);
+	AddSub16B as30({c30, s30[15:1]}, ({16{inpA[15]}} & inpB), 1'b0, s31, c31, overflow);
 
 	assign out[0]  = inpA[0] & inpB[0];
 	assign out[1]  = s1[0];
@@ -250,8 +266,23 @@ module multiplier(inpA, inpB, out);
 	assign out[12] = s12[0];
 	assign out[13] = s13[0];
 	assign out[14] = s14[0];
-	assign out[30:15] = s15;
-	assign out[31] = c15;
+	assign out[15] = s15[0];
+	assign out[16] = s16[0];
+	assign out[17] = s17[0];
+	assign out[18] = s18[0];
+	assign out[19] = s19[0];
+	assign out[20] = s20[0];
+	assign out[21] = s21[0];
+	assign out[22] = s22[0];
+	assign out[23] = s23[0];
+	assign out[24] = s24[0];
+	assign out[25] = s25[0];
+	assign out[26] = s26[0];
+	assign out[27] = s27[0];
+	assign out[28] = s28[0];
+	assign out[29] = s29[0];
+	assign out[30] = s30[0];
+	assign out[31] = s31[0];
 
 endmodule;
 
@@ -468,11 +499,11 @@ endmodule
 
 module TestBench();
  
-  reg [15:0] inputA;
-  reg [15:0] inputB;
+  reg signed [15:0] inputA;
+  reg signed [15:0] inputB;
   reg [3:0] OpCode;
   reg clk;
-  wire [31:0] Result;
+  wire signed [31:0] Result;
   wire [1:0] Error;
   BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
 	
@@ -494,37 +525,37 @@ module TestBench();
 	assign inputB  = 16'b0000000001111110;
 	assign OpCode = 4'b0000;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,ADD:%b,Result:  %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error);  
+	$display("InputA:%5d:%b,InputB:%5d:%b,ADD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error);  
    	assign OpCode=4'b0001;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,SUB:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,SUB:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0010;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,MUL:%b,Result: %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,MUL:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0011;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,DIV:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,DIV:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0100;
 	#10;
-	$display("InputA:   %2d:%b,InputB:  %2d:%b,MOD:%b,Result:   %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,MOD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	#10;
 	assign inputA  = 16'b1111001111111111;
 	assign inputB  = 16'b0110010001111110;
 	assign OpCode = 4'b0000;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,ADD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,ADD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
    	assign OpCode=4'b0001;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,SUB:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,SUB:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0010;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,MUL:%b,Result:%2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,MUL:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0011;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,DIV:%b,Result:        %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,DIV:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	assign OpCode=4'b0100;
 	#10;
-	$display("InputA:%2d:%b,InputB:%2d:%b,MOD:%b,Result:     %2d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("InputA:%5d:%b,InputB:%5d:%b,MOD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
 	#10;
 	$finish;
   end  
