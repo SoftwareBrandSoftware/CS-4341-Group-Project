@@ -494,6 +494,20 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 		mode=~OpCode[3]&~OpCode[2]&~OpCode[1]&OpCode[0];
 	end
 	
+	//Code Below Added from SSR.V to work with DflipFlop in our case the accumulator 
+		assign feedback=outval[3:0];
+
+	always @(*)  
+	begin
+	//-------------------------------------------------------------
+	 mode=command[2]; //Add vs Subtract
+	 result=b; //Next Value
+	 newVal=result;//leftover from testing
+	 error=overflow;//Don't care today.
+	 ;
+	//-------------------------------------------------------------	   
+	end
+	
 endmodule
 
 
