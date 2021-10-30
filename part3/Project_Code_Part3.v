@@ -500,7 +500,7 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 	always @(*)  
 	begin
 	//-------------------------------------------------------------
-	 mode=command[2]; //Add vs Subtract
+	 mode=command[1]; //Add vs Subtract
 	 result=b; //Next Value
 	 newVal=result;//leftover from testing
 	 error=overflow;//Don't care today.
