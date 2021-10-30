@@ -516,8 +516,12 @@ module TestBench();
 	  forever
 		  begin 
 			  clk = 0;
+			  #5
+			     $display("CLK:%b,Register:%b",clk,BB8.outval);
 			  #5;
-			  clk = 1;
+			  clk = 1
+			  #5
+			     $display("CLK:%b,Register:%b",clk,BB8.outval);	
 			  #10;
 		  end
 	end
