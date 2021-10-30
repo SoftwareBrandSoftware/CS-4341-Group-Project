@@ -495,7 +495,7 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 	end
 	
 	//Code Below Added from SSR.V to work with DflipFlop in our case the accumulator 
-		assign feedback=outval[3:0];
+	assign feedback=outval[15:0];
 
 	always @(*)  
 	begin
