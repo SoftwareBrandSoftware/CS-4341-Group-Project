@@ -514,11 +514,11 @@ module TestBench();
 		  begin 
 			  clk = 0;
 			  #5
-			     $display("CLK:%b,Register:%b",clk,BB8.out);
+			  //$display("CLK:%b,Register:%b",clk,BB8.out); 
 			  #5;
-			  clk = 1
+			  clk = 1;
 			  #5
-			     $display("CLK:%b,Register:%b",clk,BB8.out);	
+			   //  $display("CLK:%b,Register:%b",clk,BB8.out);	
 			  #10;
 		  end
 	end
