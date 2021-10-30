@@ -470,7 +470,7 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	NAND nandg(inputA,inputB,NANDtoMUX);
 	NOT notg(inputA,NOTtoMUX);
 	
-	DFF #100 Accumulator (clk,in,out,nout);   //DFlipFlop
+	DFF #100 Accumulator(clk,in,out,nout);   //DFlipFlop
 	
 	assign channels[ 0]=ADDtoMUX;//Addition
 	assign channels[ 1]=ADDtoMUX;//Subtraction
