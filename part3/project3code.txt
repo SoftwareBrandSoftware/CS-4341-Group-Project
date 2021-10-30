@@ -13,7 +13,7 @@ module DFF(clk,in,out,nout);
   
 	always @(posedge clk)//<--This is the statement that makes the circuit behave with TIME
 	 begin 
-		 if(reset)
+		 if( in == 32b'{0})
 		  out <= 0;
 		 else
 	          out <= in;
