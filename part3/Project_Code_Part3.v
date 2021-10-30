@@ -451,6 +451,9 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	wire [31:0] NANDtoMUX;
 	wire [31:0] NOTtoMUX;
 	
+	//DFlipFlop
+	
+	
 	
 	Dec4x16 DecAlpha(OpCode,DECtoMUX);
 	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,overflow);
@@ -467,6 +470,7 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	NAND nandg(inputA,inputB,NANDtoMUX);
 	NOT notg(inputA,NOTtoMUX);
 	
+	DFF #100 (clk,in,out,nout);   //DFlipFlop
 	
 	assign channels[ 0]=ADDtoMUX;//Addition
 	assign channels[ 1]=ADDtoMUX;//Subtraction
