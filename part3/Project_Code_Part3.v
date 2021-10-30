@@ -414,7 +414,8 @@ module NOT(inputA,result);
 	
 endmodule
 
-module BreadBoard(inputA,inputB,OpCode,Result,Error);
+module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipFlop
+	input clk; //Added clk for dflipFlop
 	input [15:0]inputA;
 	input [15:0]inputB;
 	
@@ -450,10 +451,6 @@ module BreadBoard(inputA,inputB,OpCode,Result,Error);
 	wire [31:0] ANDtoMUX;
 	wire [31:0] NANDtoMUX;
 	wire [31:0] NOTtoMUX;
-	
-	//DFlipFlop
-	
-	
 	
 	Dec4x16 DecAlpha(OpCode,DECtoMUX);
 	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,overflow);
@@ -509,7 +506,7 @@ module TestBench();
   reg clk;
   wire signed [31:0] Result;
   wire [1:0] Error;
-  BreadBoard BB8(inputA,inputB,OpCode,Result,Error);
+	BreadBoard BB8(clk,inputA,inputB,OpCode,Result,Error);  //added CLK for the DflipFlop named accumulator
 	
   initial
 	begin
@@ -517,11 +514,11 @@ module TestBench();
 		  begin 
 			  clk = 0;
 			  #5
-			     $display("CLK:%b,Register:%b",clk,BB8.outval);
+			     $display("CLK:%b,Register:%b",clk,BB8.out);
 			  #5;
 			  clk = 1
 			  #5
-			     $display("CLK:%b,Register:%b",clk,BB8.outval);	
+			     $display("CLK:%b,Register:%b",clk,BB8.out);	
 			  #10;
 		  end
 	end
