@@ -1,25 +1,16 @@
 //=============================================
 // D Flip-Flop
 //=============================================
-module DFF(clk,in,out,nout);
-  
+module DFF(clk,in,out);
   parameter n =1; //width  Are we supposed to change to 32bits? Because we have a 32Bit Memory Register? 
   input reset; // Added to have a reset I'm not 100% sure we need it, but looking at DflipFlop in diagrams there is a reset...
   input  clk;
   input  [n-1:0] in;
   output [n-1:0] out;
-  output [n-1:0] nout;
   reg    [n-1:0] out;
   
 	always @(posedge clk)//<--This is the statement that makes the circuit behave with TIME
-	 begin 
-		 if(reset)
-		  out <= 0;
-		 else
-	          out <= in;
-	  end
-			 
-	  assign  nout = !out; 
+	  out = in;	 
  endmodule
 
 //=============================================
@@ -414,14 +405,16 @@ module NOT(inputA,result);
 	
 endmodule
 
-module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipFlop
-	input clk; //Added clk for dflipFlop
+module BreadBoard(clk,inputA,OpCode,feedback,Result,Error);
+	input clk;
 	input [15:0]inputA;
-	input [15:0]inputB;
-	
 	input [3:0] OpCode;
+	
 	output [31:0] Result;
+	output [15:0] feedback;
 	output [1:0] Error;
+	
+	reg [31:0] Result;
 
 	//Multiplexer
 	wire [15:0][31:0] channels ;
@@ -452,22 +445,31 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 	wire [31:0] NANDtoMUX;
 	wire [31:0] NOTtoMUX;
 	
-	Dec4x16 DecAlpha(OpCode,DECtoMUX);
-	AddSub32B AddSub(inputA,inputB,mode,ADDtoMUX,carry,overflow);
-	multiplier Multiplier(inputA,inputB,MULTtoMUX);
-	divisor Divider(inputA, inputB,DIVtoMUX,DIV_err);
-	modulus Modulus(inputA,inputB,MODtoMUX,MOD_err);
-	Mux16x32b Multiplexor(channels,DECtoMUX,Result);
+	//DFlipFlop
+	wire [31:0] out;
+	wire [31:0] nout;
+	wire [15:0] feedback;
 	
-	XOR xorg(inputA,inputB,XORtoMUX);
-	XNOR xnorg(inputA,inputB,XNORtoMUX);
-	OR org(inputA,inputB,ORtoMUX);
-	NOR norg(inputA,inputB,NORtoMUX);
-	AND andg(inputA,inputB,ANDtoMUX);
-	NAND nandg(inputA,inputB,NANDtoMUX);
+	//Multiplexer
+	wire [31:0] MUXtoDFF;
+	
+	Dec4x16 Decoder(OpCode,DECtoMUX);
+	AddSub32B AddSub(inputA,feedback,mode,ADDtoMUX,carry,overflow);
+	multiplier Multiplier(inputA,feedback,MULTtoMUX);
+	divisor Divider(inputA, feedback,DIVtoMUX,DIV_err);
+	modulus Modulus(inputA,feedback,MODtoMUX,MOD_err);
+	Mux16x32b Multiplexor(channels,DECtoMUX,MUXtoDFF);
+	DFF #(32) Accumulator(clk,MUXtoDFF,out);
+	
+	XOR xorg(inputA,feedback,XORtoMUX);
+	XNOR xnorg(inputA,feedback,XNORtoMUX);
+	OR org(inputA,feedback,ORtoMUX);
+	NOR norg(inputA,feedback,NORtoMUX);
+	AND andg(inputA,feedback,ANDtoMUX);
+	NAND nandg(inputA,feedback,NANDtoMUX);
 	NOT notg(inputA,NOTtoMUX);
 	
-	DFF #100 Accumulator(clk,in,out,nout);   //DFlipFlop
+	assign feedback = out[15:0];
 	
 	assign channels[ 0]=ADDtoMUX;//Addition
 	assign channels[ 1]=ADDtoMUX;//Subtraction
@@ -481,10 +483,10 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 	assign channels[ 9]=ANDtoMUX;//GROUND=0
 	assign channels[10]=NANDtoMUX;//GROUND=0
 	assign channels[11]=NOTtoMUX;//GROUND=0
-	assign channels[12]=0;//GROUND=0
-	assign channels[13]=0;//GROUND=0
+	assign channels[12]=out;//NoOp
+	assign channels[13]={32{1'b0}};//reset
 	assign channels[14]={32{1'b1}};;//preset
-	assign channels[15]=0;//reset
+	assign channels[15]={32{1'b0}};//reset
 	
 	assign Error[0]=overflow & (DECtoMUX[0] | DECtoMUX[1]);
 	assign Error[1]=(DIV_err & DECtoMUX[3]) | (MOD_err & DECtoMUX[4]);
@@ -492,20 +494,7 @@ module BreadBoard(clk,inputA,inputB,OpCode,Result,Error); //Added clk for DflipF
 	always @(*)  
 	begin
 		mode=~OpCode[3]&~OpCode[2]&~OpCode[1]&OpCode[0];
-	end
-	
-	//Code Below Added from SSR.V to work with DflipFlop in our case the accumulator 
-	assign feedback=outval[15:0];
-
-	always @(*)  
-	begin
-	//-------------------------------------------------------------
-	 mode=command[1]; //Add vs Subtract
-	 result=b; //Next Value
-	 newVal=result;//leftover from testing
-	 error=overflow;//Don't care today.
-	 ;
-	//-------------------------------------------------------------	   
+		Result = MUXtoDFF;
 	end
 	
 endmodule
@@ -515,67 +504,148 @@ endmodule
 module TestBench();
  
   reg signed [15:0] inputA;
-  reg signed [15:0] inputB;
   reg [3:0] OpCode;
   reg clk;
   wire signed [31:0] Result;
   wire [1:0] Error;
-	BreadBoard BB8(clk,inputA,inputB,OpCode,Result,Error);  //added CLK for the DflipFlop named accumulator
+  wire [15:0] feedback;
+  BreadBoard BB8(clk,inputA,OpCode,feedback,Result,Error);
 	
-  initial
+initial
 	begin
-	  forever
-		  begin 
-			  clk = 0;
-			  #5
-			  //$display("CLK:%b,Register:%b",clk,BB8.out); 
-			  #5;
-			  clk = 1;
-			  #5
-			   //  $display("CLK:%b,Register:%b",clk,BB8.out);	
-			  #10;
-		  end
+ 			forever
+				begin
+					clk=0;
+					#3;
+					//$display("CLK:%b,Register:%b",clk,BB8.Result);
+					#2;
+					clk=1;
+					#3;  
+					//$display("CLK:%b,Register:%b",clk,BB8.Result);					
+					#2;
+				end
 	end
-	   
-			  
-    
+   
+//STIMULUS THREAD
   initial begin
-	assign inputA  = 16'b0000000000001111;
-	assign inputB  = 16'b0000000001111110;
-	assign OpCode = 4'b0000;
+    
+
+	//$display("\n=======================\n");
+	#5;
+		
+	$display("Switch on circuit");
+	$display("%5d, %16b, %5d, %16b,Unknown :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+
+	
+	//$display("Reset");
+	assign inputA=16'b0000000000000000;
+	assign OpCode=4'b1111;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,ADD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error);  
-   	assign OpCode=4'b0001;
+	$display("%5d, %16b, %5d, %16b,Reset   :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	
+	//$display("Add");
+	assign inputA=16'b0000000000001000;
+	assign OpCode=4'b0000;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,SUB:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0010;
+	$display("%5d, %16b, %5d, %16b,Add     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	
+	//$display("Subtract");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b0001;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,MUL:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0011;
+	$display("%5d, %16b, %5d, %16b,Subtract:%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+
+	//$display("Multiply");
+	assign inputA=16'b0000000000001010;
+	assign OpCode=4'b0010;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,DIV:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0100;
+	$display("%5d, %16b, %5d, %16b,Multiply:%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Divide");
+	assign inputA=16'b0000000000000010;
+	assign OpCode=4'b0011;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,MOD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("%5d, %16b, %5d, %16b,Divide  :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Modulus");
+	assign inputA=16'b0000000000000011;
+	assign OpCode=4'b0011;	
 	#10;
-	assign inputA  = 16'b1111001111111111;
-	assign inputB  = 16'b0110010001111110;
-	assign OpCode = 4'b0000;
+	$display("%5d, %16b, %5d, %16b,Modulus :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Xor");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b0100;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,ADD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-   	assign OpCode=4'b0001;
+	$display("%5d, %16b, %5d, %16b,Xor     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Xnor");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b0101;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,SUB:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0010;
+	$display("%5d, %16b, %5d, %16b,Xnor    :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Or");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b0111;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,MUL:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0011;
+	$display("%5d, %16b, %5d, %16b,Or      :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Nor");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b1000;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,DIV:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
-	assign OpCode=4'b0100;
+	$display("%5d, %16b, %5d, %16b,Nor     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+
+	//$display("And");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b1001;	
 	#10;
-	$display("InputA:%5d:%b,InputB:%5d:%b,MOD:%b,Result:%10d:%b,Error:%b",inputA,inputA,inputB,inputB,OpCode,Result,Result,Error); 
+	$display("%5d, %16b, %5d, %16b,And     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Nand");
+	assign inputA=16'b0000000000000010;
+	assign OpCode=4'b1010;	
 	#10;
+	$display("%5d, %16b, %5d, %16b,Nand    :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+
+	//$display("Not");
+	assign inputA=16'b0000000000001111;
+	assign OpCode=4'b1011;	
+	#10;
+	$display("%5d, %16b, %5d, %16b,Not     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+
+	//$display("No-Op");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b1100;	
+	#10;
+	$display("%5d, %16b, %5d, %16b,No-op   :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	
+	//$display("Preset");
+	assign inputA=16'b0000000000000001;
+	assign OpCode=4'b1110;	
+	#10;
+	$display("%5d, %16b, %5d, %16b,Preset  :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	//$display("\n=======================\n");
+	 
 	$finish;
   end  
   
