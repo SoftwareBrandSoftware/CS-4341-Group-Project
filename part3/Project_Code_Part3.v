@@ -534,7 +534,7 @@ initial
 	#5;
 		
 	$display("Switch on circuit");
-	$display("%5d, %16b, %5d, %16b,Unknown :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Unknown :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 
 	
@@ -542,108 +542,108 @@ initial
 	assign inputA=16'b0000000000000000;
 	assign OpCode=4'b1111;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Reset   :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Reset   :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	
 	//$display("Add");
-	assign inputA=16'b0000000000001000;
+	assign inputA=16'b0010000000001000;
 	assign OpCode=4'b0000;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Add     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Add     :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	
 	//$display("Subtract");
-	assign inputA=16'b0000000000000001;
+	assign inputA=16'b0000000000100001;
 	assign OpCode=4'b0001;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Subtract:%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Subtract:%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 
 	//$display("Multiply");
-	assign inputA=16'b0000000000001010;
+	assign inputA=16'b111000111000101;
 	assign OpCode=4'b0010;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Multiply:%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Multiply:%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Divide");
-	assign inputA=16'b0000000000000010;
+	assign inputA=16'b000000001000010;
 	assign OpCode=4'b0011;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Divide  :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Divide  :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Modulus");
 	assign inputA=16'b0000000000000011;
-	assign OpCode=4'b0011;	
+	assign OpCode=4'b0100;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Modulus :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Modulus :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Xor");
-	assign inputA=16'b0000000000000001;
-	assign OpCode=4'b0100;	
+	assign inputA=16'b1111100000000001;
+	assign OpCode=4'b0101;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Xor     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Xor     :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Xnor");
-	assign inputA=16'b0000000000000001;
-	assign OpCode=4'b0101;	
+	assign inputA=16'b000000000011111;
+	assign OpCode=4'b0110;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Xnor    :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Xnor    :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Or");
-	assign inputA=16'b0000000000000001;
+	assign inputA=16'b0000011110000001;
 	assign OpCode=4'b0111;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Or      :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Or      :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Nor");
-	assign inputA=16'b0000000000000001;
+	assign inputA=16'b001111000000001;
 	assign OpCode=4'b1000;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Nor     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Nor     :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 
 	//$display("And");
-	assign inputA=16'b0000000000000001;
+	assign inputA=16'b1111111111111111;
 	assign OpCode=4'b1001;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,And     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,And     :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Nand");
-	assign inputA=16'b0000000000000010;
+	assign inputA=16'b0011111000000010;
 	assign OpCode=4'b1010;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Nand    :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Nand    :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 
 	//$display("Not");
 	assign inputA=16'b0000000000001111;
 	assign OpCode=4'b1011;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Not     :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Not     :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 
 	//$display("No-Op");
 	assign inputA=16'b0000000000000001;
 	assign OpCode=4'b1100;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,No-op   :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,No-op   :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	
 	//$display("Preset");
 	assign inputA=16'b0000000000000001;
 	assign OpCode=4'b1110;	
 	#10;
-	$display("%5d, %16b, %5d, %16b,Preset  :%2d,%10d, %32b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result);
+	$display("%6d, %16b, %6d, %16b,Preset  :%2d,%11d, %32b, %2b",inputA,inputA,BB8.feedback,BB8.feedback,OpCode,Result,Result,Error);
 	//$display("\n=======================\n");
 	 
 	$finish;
