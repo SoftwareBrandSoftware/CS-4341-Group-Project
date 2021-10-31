@@ -1,0 +1,53 @@
+
+
+
+INPUTS: 2.2.2.1 
+InputA is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier. 
+Out is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier. 
+OpCode is the input of 4 bits that represents a unique code to signify which calculation will be used as the result. All 4 bits feed into the decoder. Also, the least significant bit feeds into the Adder-Subtractor as the mode. 
+ Clk is an input that generate that produces a bit that results in a square wave as to best describe it is that it provides the accumulator the one bit which happens to be a D Flip Flop. This also includes the register for memory that is apart of the signal process. 
+Another way to describe this clock is that it stimulates the accumulator to produce an output that is a ouput is an input for 16bits that ends up going as an input for all components that have inputs of InputA.
+
+OUTPUTS: 2.2.2.2 
+Result is a 32 bit output representing the result of Accumulator which happens to be a DFlipFlop. The DFlipFlop then gets inputs from The Multiplexor named Mux.
+Error is a two bit output where the most significant bit represents the error from the Divider or the Modulus modules and the least significant bit represents the error from the Adder-Subtractor. 
+ 
+
+INTERFACES: 2.2.2.3 
+ADDtoMUX Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 0. 
+SUBtoMUX Interface is a 32 bit wire that connects from the Adder-Subtractor result to the MULTIPLEXOR channel 1. 
+MULTtoMUX Interface is a 32 bit wire that connects from the Multiplier result to the MULTIPLEXOR channel 2. 
+DIVtoMUX Interface is a 32 bit wire that connects from the Divider result to the MULTIPLEXOR channel 3. 
+MODtoMUX Interface is a 32 bit wire that connects from the Modulus result to the MULTIPLEXOR channel 4. 
+XORtoMUX interface is a 32bit wire that connects from the XORG gate to the MULTIPLEXOR channel 5.
+XNORtoMUX interface is a 32bit wire that connects the XNORG to the MULTIPLEXOR channel 6.
+ORtoMUX interface is a 32bit wire that connects the ORG to the MULTIPLEXOR channel 7.
+NORtoMXU interface is a 32bit wire that connect the NORG to the Multiplexor channel 8.
+ANDtoMUX interface is a 32bit wire that connects ANDG to the Multipexor channel 9.
+NANDtoMUX interface is a 32 bit wire that connects NANDG to the MULTIPLEXOR channel 10.
+NOTtoMUX interface is a 32bit wire that connects the NOTG to the MULTIPLEXORchannel 11.
+DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE  
+Mod_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE  
+DEC_to_MUX is a 16 bit one hot wire that connects from the Decoder to the Multiplexor select. Mode is a 1 bit register that holds the value of the first bit of OPCode and feeds into the Adder-Subtractor mode input. 
+
+
+
+COMBINATIONAL LOGIC COMPONENTS: 2.2.2.4 
+
+The Accumulator comprises of a DFlipFlop that takes in two inputs one is a 32bit result from the Multiplexor and the other input is a Clock clk which is one bit. The Clock stimulates the DFlipFlop which happens ot be considered a register that is used for a memeory place. The is memory is used to be fed back as an input to the components that connect to the Multiplexor. 
+HalfAdder is a half-adder that is used when constructing the full adder. 
+FullAdder is a full-adder that is used when constructing the adder-subtractor. 
+AddSub16B is a 16 bit adder-subtractor that is used when constructing the AddSub32B and Multiplier modules. 
+AddSub32B is a adder-subtractor that will calculate the addition or subtraction of two 16 bit unsigned integers. The result is the result from the 16 bit addition or subtraction with the 16 most significant bits equal to 0. The error is equal to 1 if there is overflow or underflow, otherwise the error is equal to 0. 
+Mux16x32b is a 16 channel 32 bit multiplexor. It takes the results from the arithmetic components and selects one based on the result from the decoder. Channels 5 through 15 are all equal to 0.
+Dec4x16 is a 4-bit to 16-bit-one-hot decoder that takes 4 bits from the input OPCode and converts it into a one-hot to send as the select to the multplexor. 
+Multiplier is a 16x16 bit structured multiplier constructed using 15 16-bit adder-subtractors. The result is sent to the multiplexor channel 3. 
+Divider is a 16x16 bit behavioral divider. If divide-by-zero occurs, the divider will return 0 as the result and 1 as the error. 
+Modulus is a 16x16 bit behavioral component to calculate modulus. If modulus-by-zero occurs, Modulus will return 0 as the result and 1 as the error. 
+XORG is a module that is an XOR gate that takes in two inputs Feedback and InputA that are 16 bits each which become  an output of 32 bits that is produced and sent to the Multiplexor on channel 6
+XNOR is a module that is consider to be logical the NOT XOR gate which negates the XOR gate. The input comprises of two inputs Feedback and InputA which happen to be 16 bits each. The result is 32 bits in size that is sent to the Multiplexor. The channel that the XNOR output is recieved on is channel  7 on the Multiplexor. 
+ORG is the OR gate that takes in two inputs which is the Feedback and the InputA both are 16 bits in size. Also the output is 32Bits that goes into channel 8 of  the Mutliplexor. 
+NORG is the NOT or gate known as the negation of the OR gate. This component takes in two inputs of 16bits Feedback and Input A. The output of the module is going to the multiplexor to the Channel 9. I really want to make a TV joke right now, but I'm to busy talking about channels. :) 
+ANDG is the AND gate that takes in tow inpputs Feedback and InputA that are both 16 bits in size. The output is the result that goes into the Multiplexor to the channel 10.
+NANDG is the Negation of the AND gate. The input is two inputs feedback and InputA which areb oth 16 bits. The output is 32bits and it goes to the Multiplexor on channel 11.
+NOTG is the NOT gate that takes in one input of inputA which negates it. The output of 32 bits  goes to the multiplexor on channel 12.
