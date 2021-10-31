@@ -5,7 +5,7 @@ INPUTS: 2.2.2.1
 InputA is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier. 
 Out is the input of 16 bits representing an unsigned integer that is used to bring data bits to the Adder, Subtractor, Divider, Modulus and the multiplier. 
 OpCode is the input of 4 bits that represents a unique code to signify which calculation will be used as the result. All 4 bits feed into the decoder. Also, the least significant bit feeds into the Adder-Subtractor as the mode. 
- Clk is an input that generate that produces a bit that results in a square wave as to best describe it is that it provides the accumulator the one bit which happens to be a D Flip Flop. This also includes the register for memory that is apart of the signal process. 
+Clk is an input that generate that produces a bit that results in a square wave as to best describe it is that it provides the accumulator the one bit which happens to be a D Flip Flop. This also includes the register for memory that is apart of the signal process. 
 Another way to describe this clock is that it stimulates the accumulator to produce an output that is a ouput is an input for 16bits that ends up going as an input for all components that have inputs of InputA.
 
 OUTPUTS: 2.2.2.2 
@@ -29,7 +29,9 @@ NOTtoMUX interface is a 32bit wire that connects the NOTG to the MULTIPLEXORchan
 DIV_ERR Interface is a 1 bit wire that connects the Divider error output to the OR GATE  
 Mod_ERR Interface is a 1 bit wire that connects the Modulus error output to the OR GATE  
 DEC_to_MUX is a 16 bit one hot wire that connects from the Decoder to the Multiplexor select. Mode is a 1 bit register that holds the value of the first bit of OPCode and feeds into the Adder-Subtractor mode input. 
-
+feedback is a 16 bit wire that holds the lower 16 bits of the Accumulator Flip Flop. Feedback feeds into the input of most combinational logic components.
+mode is a 1 bit register that holds the LSB of OpCode. It feeds into C0 of AddSub.
+Overflow is a 1 bit wire that is the output of AddSub32B and the LSB of Error.
 
 
 COMBINATIONAL LOGIC COMPONENTS: 2.2.2.4 
