@@ -1,4 +1,4 @@
-package Changer;
+ package Changer;
 
 import java.io.*;
 import java.io.FileNotFoundException;
@@ -55,16 +55,13 @@ System.out.println(" MOD ");
 
     public static void readTextFileUsingScanner(String fileName)
     {
-    BufferedReader br = null;
-        try {
-            File file = new File(fileName); // java.io.File
-            FileReader fr = new FileReader(file); // java.io.FileReader
-            br = new BufferedReader(fr); // java.io.BufferedReader
-            String line;
-            while ((line = br.readLine()) != null) {
-              System.out.println(line);
-             //for(int i = 0; i < line.length(); i++)
-            // {
+    try {
+    Scanner sc = new Scanner(new File(fileName));
+     while(sc.hasNext())
+    {
+     String str = sc.nextLine();
+              System.out.println(str);
+
              String reset = "0000";
              String add   = "0001";
              String sub   = "0010";
@@ -72,32 +69,41 @@ System.out.println(" MOD ");
              String div   = "0100";
              String mod   = "0101";
              
-             if(line.equals(reset)) {
+             if(str.equals(reset)) {
              System.out.println("RESET");
-             
              RESET();
              }
-             if(line.equals(add)) {
+             if(str.equals(add)) {
+             String SecondLine =sc.nextLine();
+                  Result(SecondLine);
              System.out.println("ADD");
             //Read next line to get the digits
              ADD();
              }            
-             if(line.equals(sub)) {
+             if(str.equals(sub)) {
+             String SecondLine =sc.nextLine();
+              Result(SecondLine);
              System.out.println("SUB");
             //Read next line to get the digits
              SUB();
              }
-             if(line.equals(mult)) {
+             if(str.equals(mult)) {
+             String SecondLine =sc.nextLine();
+              Result(SecondLine);
              System.out.println("MULT");
             //Read next line to get the digits
              MUL();
              }
-             if(line.equals(div)) {
+             if(str.equals(div)) {
+             String SecondLine =sc.nextLine();
+              Result(SecondLine);
              System.out.println("DIV");
             //Read next line to get the digits
              DIV();
              }
-             if(line.equals(mod)) {
+             if(str.equals(mod)) {
+             String SecondLine =sc.nextLine();
+              Result(SecondLine);
              System.out.println("MOD");
             //Read next line to get the digits
              MOD();
@@ -105,17 +111,13 @@ System.out.println(" MOD ");
             //  }
              
             }
-          }
-          catch(IOException e) { e.printStackTrace();}
-          finally
-          {
-              try { if (br != null) br.close(); }
-              catch(IOException e) { e.printStackTrace(); }
-          }
-       
-       
-       
+ sc.close();
+  }catch (IOException e) {
+  //TODO
+  e.printStackTrace();
+  }
     }
-   
-
-} 
+}
+	
+	
+	
