@@ -1,4 +1,4 @@
- package Changer;
+package Changer;
 
 import java.io.*;
 import java.io.FileNotFoundException;
@@ -75,35 +75,27 @@ System.out.println(" MOD ");
              }
              if(str.equals(add)) {
              String SecondLine =sc.nextLine();
-                  Result(SecondLine);
+            //   Result(SecondLine);
              System.out.println("ADD");
             //Read next line to get the digits
              ADD();
              }            
              if(str.equals(sub)) {
-             String SecondLine =sc.nextLine();
-              Result(SecondLine);
              System.out.println("SUB");
             //Read next line to get the digits
              SUB();
              }
              if(str.equals(mult)) {
-             String SecondLine =sc.nextLine();
-              Result(SecondLine);
              System.out.println("MULT");
             //Read next line to get the digits
              MUL();
              }
              if(str.equals(div)) {
-             String SecondLine =sc.nextLine();
-              Result(SecondLine);
              System.out.println("DIV");
             //Read next line to get the digits
              DIV();
              }
              if(str.equals(mod)) {
-             String SecondLine =sc.nextLine();
-              Result(SecondLine);
              System.out.println("MOD");
             //Read next line to get the digits
              MOD();
@@ -118,6 +110,3 @@ System.out.println(" MOD ");
   }
     }
 }
-	
-	
-	
