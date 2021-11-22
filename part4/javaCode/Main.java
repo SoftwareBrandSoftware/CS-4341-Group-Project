@@ -7,17 +7,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,16 +58,10 @@ public class Main extends Application {
 		arg0.show();
 		// end setup
 
-		// Gravitational acceleration = 9.81m/s^2
-		// 1000 / 20 millis = 50
-		// 9.81/50 = 0.1962
-
-		Timeline line = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+		Timeline line = new Timeline(new KeyFrame(Duration.millis(5000), new EventHandler<ActionEvent>() {
 			@Override
 
 			public void handle(ActionEvent t) {
-				FileOutputStream out;
-
 				for (Planet i : planets) {
 					if (i.shape.getCenterX() == 400 && i.shape.getCenterY() == 400) { // earth is fixed
 						continue;
@@ -75,35 +69,37 @@ public class Main extends Application {
 					double fInX = 0;
 					double fInY = 0;
 					try {
-						out = new FileOutputStream("v_ops_test.txt");
 						for (Planet j : planets) {
 							if (!i.equals(j)) {
 								// calculate force between i and j
 								// add force to force in x direction to total force in x direction for i
 								double fTot = PhysicsCalculations.forceGravity(i.mass, j.mass, i.shape.getCenterX(),
-										j.shape.getCenterX(), i.shape.getCenterY(), j.shape.getCenterY(), out);
+										j.shape.getCenterX(), i.shape.getCenterY(), j.shape.getCenterY());
+								Thread.sleep(1000);
 								double hyp = Math.sqrt(Math.pow(j.shape.getCenterX() - i.shape.getCenterX(), 2)
 										+ Math.pow(j.shape.getCenterY() - i.shape.getCenterY(), 2));
 								fInX += fTot * (j.shape.getCenterX() - i.shape.getCenterX()) / hyp;
 								fInY += fTot * (j.shape.getCenterY() - i.shape.getCenterY()) / hyp;
 							}
 						}
-						out.close();
+
 						/*
-						 * 1 - run verilog in cmd 
-						 * 2 - read input from verilog output file
+						 * 1 - run verilog in cmd 2 - read input from verilog output file
 						 */
-						
-						//System.exit(0);  // for testing java output/verilog input file
-						
+						// 1.
+
 						// calculate new x position for i based on force (in both x and y)
-						out = new FileOutputStream("v_ops_test.txt");
-						i.shape.setCenterX(PhysicsCalculations.positionX(i.shape.getCenterX(), i.velocityX, out));
-						i.shape.setCenterY(PhysicsCalculations.positionX(i.shape.getCenterY(), i.velocityY, out));
+						i.shape.setCenterX(PhysicsCalculations.positionX(i.shape.getCenterX(), i.velocityX));
+						Thread.sleep(1000);
+						i.shape.setCenterY(PhysicsCalculations.positionX(i.shape.getCenterY(), i.velocityY));
+						Thread.sleep(1000);
+						System.out.println("here");
 						// calculate new velocity for i based on force (in both x and y)
-						i.velocityX = PhysicsCalculations.velocityX(i.velocityX, fInX, i.mass, out);
-						i.velocityY = PhysicsCalculations.velocityX(i.velocityY, fInY, i.mass, out);
-						out.close();
+						i.velocityX = PhysicsCalculations.velocityX(i.velocityX, fInX, i.mass);
+						Thread.sleep(1000);
+						i.velocityY = PhysicsCalculations.velocityX(i.velocityY, fInY, i.mass);
+						Thread.sleep(1000);
+						//System.exit(0);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -112,6 +108,10 @@ public class Main extends Application {
 					// i.velocityX
 					// + " y vel " + i.velocityY + " x pos " + i.shape.getCenterX() + " y pos "
 					// + i.shape.getCenterY());
+ catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -122,6 +122,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String arg2[]) throws IOException {
+		Runtime.getRuntime().exec("iverilog verilog.txt");
 		launch();
 	}
 }
