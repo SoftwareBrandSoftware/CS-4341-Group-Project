@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 
 public class PhysicsCalculations {
 	public static final double G = 6.673e-11;
-	public static final double time = 24*3600;  // day in seconds
+	public static final double time = 24*3600;  // 12 hr in seconds
 	public static final double pixToM = 1900000;
-	public static final int wait = 500;
+	public static final int wait = 1000;
 	
 	// using meters, seconds, kilograms
 	
@@ -46,9 +46,9 @@ public class PhysicsCalculations {
 		}
 		out.close();
 		
-		Runtime.getRuntime().exec("vvp a.out");
-		
-		Thread.sleep(wait);
+		Process p = Runtime.getRuntime().exec("vvp a.out");
+		p.waitFor();
+		//Thread.sleep(wait);
 		
 		FileInputStream in = new FileInputStream("v_out_test.txt");
 		
@@ -65,7 +65,7 @@ public class PhysicsCalculations {
 		in.close();
 		//force /=Math.pow(2, 20);
 		System.out.println(force*G);
-		System.out.println((mass1/divisor*mass2*G));
+		//System.out.println((mass1/divisor*mass2*G));
 		
 		return force*G; 
 	}
@@ -75,9 +75,9 @@ public class PhysicsCalculations {
 		// or use xf = xi + vi*dt + 0.5*a*dt^2
 		FileOutputStream out = null;
 		
-		byte[][] opcode = {set, mult, div, add, noop};
+		byte[][] opcode = {set, mult, div, noop};
 		byte[] newline = {'\n'};
-		double[] inputs = {objV*Math.pow(2, 50), time, pixToM, objX*Math.pow(2, 50), 0.0};
+		double[] inputs = {Math.abs(objV)*Math.pow(2, 50), time, pixToM, 0.0};
 		
 		out = new FileOutputStream("v_ops_test.txt");
 		for(int i=0; i<opcode.length; i++) {
@@ -90,9 +90,9 @@ public class PhysicsCalculations {
 		}// output is scaled 
 		out.close();
 		
-		Runtime.getRuntime().exec("vvp a.out");
-		
-		Thread.sleep(wait);
+		Process p = Runtime.getRuntime().exec("vvp a.out");
+		p.waitFor();
+		//Thread.sleep(wait);
 		FileInputStream in = new FileInputStream("v_out_test.txt");
 		
 		double position = 0;
@@ -108,10 +108,16 @@ public class PhysicsCalculations {
 		// input is scaled down by 2^50
 		position /= Math.pow(2, 50);
 		System.out.println(position);
-		System.out.println(objX + objV*time/pixToM);
+		//System.out.println(objX + objV*time/pixToM);
 
 		in.close();
 
+		if(objV >= 0) {
+			position = objX + position;
+		} else {
+			position = objX - position;
+		}
+		
 		return position;
 		//return objX + objV*time/pixToM;
 	}
@@ -124,11 +130,13 @@ public class PhysicsCalculations {
 		// a = F/m
 		// vf = vi + F/m * dt
 		FileOutputStream out = null;
-
-		byte[][] opcode = {set, mult, mult,  div, add, noop};
+		byte[][] opcode = {set, mult,  div, noop};
 		byte[] newline = {'\n'};
-		double[] inputs = {obj1Force, Math.pow(2, 10), time, obj1M, obj1V*Math.pow(2, 10), 0.0};
+		double[] inputs = {Math.abs(obj1Force), time, obj1M/Math.pow(2, 50), 0.0};
 
+
+		//System.out.println(obj1Force +"  "+ time +"  "+ obj1M/Math.pow(2, 50) +"  "+"  "+ obj1V*Math.pow(2, 50));
+		
 		out = new FileOutputStream("v_ops_test.txt");
 		for(int i=0; i<opcode.length; i++) {
 			//print to file opcode + \n
@@ -140,8 +148,9 @@ public class PhysicsCalculations {
 		}
 		out.close();
 		
-		Runtime.getRuntime().exec("vvp a.out");
-		Thread.sleep(wait);
+		Process p = Runtime.getRuntime().exec("vvp a.out");
+		p.waitFor();
+		//Thread.sleep(wait);
 		
 		FileInputStream in = new FileInputStream("v_out_test.txt");
 		double velocity = 0;
@@ -155,12 +164,20 @@ public class PhysicsCalculations {
 			b = (byte) in.read();
 		}
 		// input is scaled down by 2^50
-		velocity /= Math.pow(2, 10);
+		velocity /= Math.pow(2, 50);
+		if(obj1Force >= 0) {
+			velocity = obj1V + velocity;
+		} else {
+			velocity = obj1V - velocity;
+		}
+		
 		System.out.println(velocity);
-		System.out.println(obj1V + obj1Force/obj1M * time);
+		//System.out.println(obj1V + obj1Force/obj1M * time);
+		//System.exit(0);
 		in.close();
 		
 		//System.exit(0);
+		
 		return velocity;
 		//return obj1V + obj1Force/obj1M * time;
 	}
