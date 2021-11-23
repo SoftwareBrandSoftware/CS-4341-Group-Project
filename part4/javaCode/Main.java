@@ -12,17 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.PrintWriter;
 
 public class Main extends Application {
 	public static byte[] BB;
@@ -37,17 +30,17 @@ public class Main extends Application {
 		List<Planet> planets = new ArrayList<>();
 		Planet object1 = new Planet(6e24, 0, 0, new Circle(50, Color.YELLOW)); // earth
 		planets.add(object1);
-		Planet object2 = new Planet(7e22, 900, 0, new Circle(10, Color.GREEN));
+		Planet object2 = new Planet(7e20, 900, 0, new Circle(10, Color.GREEN));
 		planets.add(object2);
-		Planet object3 = new Planet(9e22, 0, 850, new Circle(15, Color.PURPLE));
+		Planet object3 = new Planet(9e20, 500, 500, new Circle(15, Color.PURPLE));
 		planets.add(object3);
 
 		object1.shape.setCenterX(400);
 		object1.shape.setCenterY(400);
 		object2.shape.setCenterX(400);
 		object2.shape.setCenterY(200);
-		object3.shape.setCenterX(200);
-		object3.shape.setCenterY(600);
+		object3.shape.setCenterX(300);
+		object3.shape.setCenterY(500);
 
 		p.getChildren().add(object1.shape);
 		p.getChildren().add(object2.shape);
@@ -58,10 +51,11 @@ public class Main extends Application {
 		arg0.show();
 		// end setup
 
-		Timeline line = new Timeline(new KeyFrame(Duration.millis(3000), new EventHandler<ActionEvent>() {
+		Timeline line = new Timeline(new KeyFrame(Duration.millis(10000), new EventHandler<ActionEvent>() {
 			@Override
 
 			public void handle(ActionEvent t) {
+				System.out.println(System.nanoTime());
 				for (Planet i : planets) {
 					if (i.shape.getCenterX() == 400 && i.shape.getCenterY() == 400) { // earth is fixed
 						continue;
@@ -97,10 +91,6 @@ public class Main extends Application {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					// System.out.println("x force " + fInX + " y force " + fInY + " x vel " +
-					// i.velocityX
-					// + " y vel " + i.velocityY + " x pos " + i.shape.getCenterX() + " y pos "
-					// + i.shape.getCenterY());
 					catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
