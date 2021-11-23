@@ -58,7 +58,7 @@ public class Main extends Application {
 		arg0.show();
 		// end setup
 
-		Timeline line = new Timeline(new KeyFrame(Duration.millis(5000), new EventHandler<ActionEvent>() {
+		Timeline line = new Timeline(new KeyFrame(Duration.millis(3000), new EventHandler<ActionEvent>() {
 			@Override
 
 			public void handle(ActionEvent t) {
@@ -69,13 +69,13 @@ public class Main extends Application {
 					double fInX = 0;
 					double fInY = 0;
 					try {
+						System.out.println("force");
 						for (Planet j : planets) {
 							if (!i.equals(j)) {
 								// calculate force between i and j
 								// add force to force in x direction to total force in x direction for i
 								double fTot = PhysicsCalculations.forceGravity(i.mass, j.mass, i.shape.getCenterX(),
 										j.shape.getCenterX(), i.shape.getCenterY(), j.shape.getCenterY());
-								Thread.sleep(1000);
 								double hyp = Math.sqrt(Math.pow(j.shape.getCenterX() - i.shape.getCenterX(), 2)
 										+ Math.pow(j.shape.getCenterY() - i.shape.getCenterY(), 2));
 								fInX += fTot * (j.shape.getCenterX() - i.shape.getCenterX()) / hyp;
@@ -83,23 +83,16 @@ public class Main extends Application {
 							}
 						}
 
-						/*
-						 * 1 - run verilog in cmd 2 - read input from verilog output file
-						 */
-						// 1.
 
 						// calculate new x position for i based on force (in both x and y)
+						System.out.println("position");
 						i.shape.setCenterX(PhysicsCalculations.positionX(i.shape.getCenterX(), i.velocityX));
-						Thread.sleep(1000);
 						i.shape.setCenterY(PhysicsCalculations.positionX(i.shape.getCenterY(), i.velocityY));
-						Thread.sleep(1000);
-						System.out.println("here");
+						System.out.println("velocity");
 						// calculate new velocity for i based on force (in both x and y)
 						i.velocityX = PhysicsCalculations.velocityX(i.velocityX, fInX, i.mass);
-						Thread.sleep(1000);
 						i.velocityY = PhysicsCalculations.velocityX(i.velocityY, fInY, i.mass);
-						Thread.sleep(1000);
-						//System.exit(0);
+						// System.exit(0);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -108,7 +101,7 @@ public class Main extends Application {
 					// i.velocityX
 					// + " y vel " + i.velocityY + " x pos " + i.shape.getCenterX() + " y pos "
 					// + i.shape.getCenterY());
- catch (InterruptedException e) {
+					catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
